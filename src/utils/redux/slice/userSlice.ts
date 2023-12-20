@@ -1,23 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Modify the state type and arg types to match your needs
 interface userState {
-  userId: string;
-  userEmail: string;
-  userPassword: string;
+  userId: number | null;
+  userName: string;
   userFirstName: string;
   userLastName: string;
-  userGender: string;
-  userProfile: string;
+  userPassword: string;
+  isOpenNav: boolean;
 }
 
 const initialState: userState = {
-  userId: "",
-  userEmail: "",
-  userPassword: "",
+  userId: null,
+  userName: "",
   userFirstName: "",
   userLastName: "",
-  userGender: "",
-  userProfile: "defualt",
+  userPassword: "",
+  isOpenNav: false,
 };
 
 const userSlice = createSlice({

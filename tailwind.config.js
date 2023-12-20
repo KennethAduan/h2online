@@ -9,6 +9,7 @@ export default withMT({
       colors: {
         PrimaryBackGround: COLORS.primary,
         SecondaryBackGround: COLORS.secondary,
+        AccentFontColor: COLORS.accentBlue,
       },
     },
   },

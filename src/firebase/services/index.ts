@@ -12,7 +12,7 @@ export const checkUserData = async (username: string, password: string) => {
     query(
       userRef,
       where("password", "==", password),
-      where("userName", "==", username)
+      where("username", "==", username)
     )
   );
   return querySnapshot;
