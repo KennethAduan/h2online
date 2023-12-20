@@ -1,6 +1,10 @@
 import MainRoutes from "./routes";
 const App = () => {
-  return <MainRoutes />;
+  return (
+    <div>
+      <MainRoutes />
+    </div>
+  );
 };
 
 export default App;

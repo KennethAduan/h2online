@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { checkUserData } from "../../firebase/services";
 import { BiSolidUser } from "react-icons/bi";
 import { AiFillLock } from "react-icons/ai";
+import { UserInfoRedux } from "../../utils/redux/slice/userSlice";
 const Login = () => {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -38,21 +39,22 @@ const Login = () => {
     try {
       setLoading(true);
       const checkUserCredentials = await checkUserData(userName, password);
+      console.log(checkUserCredentials);
       if (!checkUserCredentials.empty) {
         const userData = checkUserCredentials.docs[0].data();
 
-        // dispatch(
-        //   UserInfoRedux({
-        //     userName: userData.userName,
-        //     userFirstName: userData.firstName,
-        //     userLastName: userData.lastName,
-        //     userPassword: userData.password,
-        //     userId: userData.userId,
-        //   })
-        // );
+        dispatch(
+          UserInfoRedux({
+            userName: userData.username,
+            userFirstName: userData.firstName,
+            userLastName: userData.lastName,
+            userPassword: userData.password,
+            userId: userData.userId,
+          })
+        );
         localStorage.setItem("userData", JSON.stringify(userData));
         setLoading(false);
-        navigate("/dashboard");
+        navigate("/pos");
         // console.log(userData);
       } else {
         setLoading(false);
