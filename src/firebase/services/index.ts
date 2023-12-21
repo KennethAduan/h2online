@@ -33,3 +33,27 @@ export const GetItemsInventoryFirebase = async (status: string) => {
   // console.log(inventoryData);
   return inventoryData;
 };
+
+export const GetRefillProductFirebase = async () => {
+  let userRef: any = collection(db, "inventory");
+
+  userRef = query(userRef, where("refillType", "==", true));
+
+  const querySnapshot = await getDocs(userRef);
+
+  const refillData = querySnapshot.docs.map((doc) => doc.data());
+
+  return refillData;
+};
+
+export const GetPurchaseProductFirebase = async () => {
+  let userRef: any = collection(db, "inventory");
+
+  userRef = query(userRef, where("purchaseType", "==", true));
+
+  const querySnapshot = await getDocs(userRef);
+
+  const purchaseData = querySnapshot.docs.map((doc) => doc.data());
+
+  return purchaseData;
+};

@@ -3,5 +3,14 @@ import Navbar from "./Navbar/Navbar";
 import LayoutCard from "./Card/LayoutCard";
 import SalesCard from "./Card/SalesCard";
 import ItemCard from "./Card/ItemCard";
+import ProductCard from "./Card/ProductCard";
 import { StockStatusButtons } from "./Button/StockStatusButton";
-export { Sidebar, Navbar, LayoutCard, SalesCard, StockStatusButtons, ItemCard };
+export {
+  Sidebar,
+  Navbar,
+  LayoutCard,
+  SalesCard,
+  StockStatusButtons,
+  ItemCard,
+  ProductCard,
+};
