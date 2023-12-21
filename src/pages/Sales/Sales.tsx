@@ -18,14 +18,19 @@ import {
 import { COLORS } from "../../themes";
 import GetAverageSales from "../../firebase/hooks/GetAverageSales";
 import { useState } from "react";
-
+import GetMonthlySales from "../../firebase/hooks/GetMonthlySales";
 const Sales = () => {
   const [averageState, setAverage] = useState(0);
+  const [monthlySales, setMonthlySales] = useState(0);
   GetAverageSales().then((average) => {
     // console.log(`Today's average sales is: ₱${average.toFixed(2)}`);
     setAverage(average);
   });
-
+  GetMonthlySales().then((totalSales) => {
+    // console.log(`Total sales for the current month: ${totalSales}`);
+    setMonthlySales(totalSales);
+    // You can further process the totalSales, send it in a response, etc.
+  });
   const columns: GridColDef[] = [
     { field: "id", headerName: "Order ID", width: 250 },
     {
@@ -36,7 +41,7 @@ const Sales = () => {
         const date = params.value
           ? (params.value as firebase.firestore.Timestamp).toDate()
           : null;
-        return <p>{date ? moment(date).format("MM/DD/YY") : ""}</p>;
+        return <p>{date ? moment(date).format("MMM D, YYYY") : ""}</p>;
       },
     },
     { field: "itemsNumber", headerName: "items", width: 250 },
@@ -83,7 +88,7 @@ const Sales = () => {
         />
         <SalesCard
           titleSales="Monthly Sales"
-          totalSales={5000}
+          totalSales={monthlySales}
           icon={monthlySalesIcon}
         />
         <SalesCard titleSales="Revenue" totalSales={5000} icon={revenueIcon} />
@@ -105,7 +110,7 @@ const Sales = () => {
           columns={columns}
           sx={{ borderWidth: 1, borderColor: COLORS.primary }}
           getRowId={(row) => row.id}
-          disableRowSelectionOnClick
+          // disableRowSelectionOnClick
           slots={{ toolbar: GridToolbar }}
           initialState={{
             pagination: {

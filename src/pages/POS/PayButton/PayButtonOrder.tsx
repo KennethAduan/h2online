@@ -11,6 +11,7 @@ const PayButtonOrder = () => {
   const { isSuccessOrder } = useAppSelector((state) => state.user);
   const itemNumber = items.length;
   const dispatch = useAppDispatch();
+  // console.log(isSuccessOrder);
   //   console.log("Items:", items);
   const handlePay = () => {
     Swal.fire({
@@ -29,14 +30,13 @@ const PayButtonOrder = () => {
           itemNumber,
           dispatch
         );
-
         if (isSuccessOrder) {
-          dispatch(clearOrder());
           Swal.fire({
             title: "Success",
             text: "Payment has been made",
             icon: "success",
           });
+          dispatch(clearOrder());
         }
       }
     });
