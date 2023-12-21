@@ -31,7 +31,6 @@ function ItemCard({
   stock,
   image,
   status,
-  color = "bg-green-500",
   maxStock,
   itemId,
 }: ItemCardProps) {
@@ -64,7 +63,7 @@ function ItemCard({
 
   const handleAllBtn = async (itemId: string, maxStock: number) => {
     const result = await UpdateMaxStocks(itemId, maxStock);
-   if(result){// update the state variable
+  if (result !== undefined && result !== null) { // update the state variable
     console.log('Stocks are now at max');
    }
 
@@ -80,7 +79,7 @@ function ItemCard({
           <Card
             ref={card2Ref}
             placeholder={undefined}
-            className={`absolute top-0 w-96 ${handleColor(stock, color)}`}
+            className={`absolute top-0 w-96 ${handleColor(stock)}`}
           >
             <CardHeader
               placeholder={undefined}
@@ -187,7 +186,7 @@ function ItemCard({
                 placeholder={undefined}
                 size="sm"
                 variant="circular"
-                className={`border-2 border-white ${handleColor(stock, color)}`}
+                className={`border-2 border-white ${handleColor(stock)}`}
               />
             </div>
             <div className="flex items-center justify-center">
