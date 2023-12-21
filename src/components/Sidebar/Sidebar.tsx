@@ -20,7 +20,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useAppSelector, useAppDispatch } from "../../utils/redux/hooks";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 // import { COLORS } from "../../themes";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { logoutUserRedux } from "../../utils/redux/slice/userSlice";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import MonitorIcon from "@mui/icons-material/Monitor";
@@ -82,10 +82,13 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function Sidebar() {
+  const location = useLocation();
   const theme = useTheme();
   const navigate = useNavigate();
   const { isOpenNav } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -127,7 +130,7 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <MonitorIcon color="primary" />
+                  <MonitorIcon color={isActive('/pos') ? 'primary' : 'inherit'} />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
@@ -163,7 +166,7 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <AssessmentIcon color="primary" />
+                  <AssessmentIcon color={isActive('/sales') ? 'primary' : 'inherit'}  />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
@@ -199,7 +202,7 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <ChecklistIcon color="primary" />
+                  <ChecklistIcon color={isActive('/inventory') ? 'primary' : 'inherit'} />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
@@ -253,7 +256,7 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <LogoutIcon color="primary" />
+                  <LogoutIcon color={isActive('/logout') ? 'primary' : 'inherit'}  />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
