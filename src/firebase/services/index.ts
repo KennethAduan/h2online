@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { db } from "../config";
 import {
   collection,
@@ -16,4 +17,19 @@ export const checkUserData = async (username: string, password: string) => {
     )
   );
   return querySnapshot;
+};
+
+export const GetItemsInventoryFirebase = async (status: string) => {
+  let userRef: any = collection(db, "inventory");
+
+  if (status !== "All") {
+    userRef = query(userRef, where("status", "==", status));
+  }
+
+  const querySnapshot = await getDocs(userRef);
+
+  const inventoryData = querySnapshot.docs.map((doc) => doc.data());
+
+  // console.log(inventoryData);
+  return inventoryData;
 };
