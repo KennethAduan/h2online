@@ -36,7 +36,7 @@ const PointOfSales = () => {
           </LayoutCard>
           {/* For Purchase */}
           <LayoutCard title="For purchase">
-            <div className="grid mt-4 lg:grid-cols-3 md:grid-cols-2">
+            <div className="grid mt-4 lg:grid-cols-2 md:grid-cols-1 gap-2">
               {PurchaseProducts.map((product: any, index: number) => {
                 return (
                   <div key={index}>
