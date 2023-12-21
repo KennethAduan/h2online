@@ -8,6 +8,14 @@ import OrderTable from "./OrderTable/OrderTable";
 const PointOfSales = () => {
   const RefillProducts = FetchRefillProduct();
   const PurchaseProducts = FetchPurchaseProduct();
+  const handleClickRefill = (product: any) => {
+    console.log("Clicked refill product data:", product);
+  }
+  const handleClickPurchase = (product: any) => {
+    console.log("Clicked purchase product data:", product);
+  }
+ 
+  
   return (
     <DrawerAndNavLayout>
       <Breadcrumbs className="mb-4 bg-black " placeholder={undefined}>
@@ -23,12 +31,14 @@ const PointOfSales = () => {
               {RefillProducts.map((product: any, index: number) => {
                 return (
                   <div key={index}>
+                    <button onClick={() => handleClickRefill(product)}>
                     <ProductCard
                       key={product.itemCode}
                       imageUrl={product.image}
                       productName={product.item}
                       productPrice={product.refillPrice}
                     />
+                    </button>
                   </div>
                 );
               })}
@@ -40,12 +50,14 @@ const PointOfSales = () => {
               {PurchaseProducts.map((product: any, index: number) => {
                 return (
                   <div key={index}>
+                    <button onClick={() => handleClickPurchase(product)}>
                     <ProductCard
                       key={product.itemCode}
                       imageUrl={product.image}
                       productName={product.item}
                       productPrice={product.purchasePrice}
                     />
+                    </button>
                   </div>
                 );
               })}
