@@ -11,7 +11,7 @@ import {
   Avatar,
   Button,
 } from "@material-tailwind/react";
-
+import Swal from "sweetalert2";
 interface ItemCardProps {
   name: string;
   price: number;
@@ -60,17 +60,40 @@ function ItemCard({
     return color;
   };
 
-
   const handleAllBtn = async (itemId: string, maxStock: number) => {
-    const result = await UpdateMaxStocks(itemId, maxStock);
-  if (result !== undefined && result !== null) { // update the state variable
-    console.log('Stocks are now at max');
-   }
-
-      console.log('Stocks are already at max');
- 
+    // Confirm before proceeding
+    try {
+      const willAdd = await Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true, // Show cancel button
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, add it!"
+      });
+  
+      if (willAdd.isConfirmed) {
+        const result = await UpdateMaxStocks(itemId, maxStock);
+        if (result !== undefined && result !== null) {
+          // Update was successful
+          console.log('Stocks are now at max');
+          await Swal.fire('Stocks are now at max', '', 'success');
+        } else {
+          // Handle case where update is not successful
+          console.log('Update failed or no changes made');
+        }
+      } else {
+        // User did not confirm
+        console.log("No change in stock");
+        await Swal.fire("No change in stock", '', 'info');
+      }
+    } catch (error: any) {
+      // Handle any errors that occur during the process
+      console.error('An error occurred:', error);
+      await Swal.fire('An error occurred', error.message, 'error');
+    }
   }
-
+  
   return (
     <>
       <div className="relative mx-12 my-32 h-96 w-96">
@@ -212,3 +235,7 @@ function ItemCard({
 }
 
 export default ItemCard;
+function then(arg0: (willAdd: any) => void) {
+  throw new Error("Function not implemented.");
+}
+
