@@ -11,8 +11,6 @@ const Inventory = () => {
     setSelectedStockStatus(StockStatus);
   };
   const IventoryData = getInventoryData(selectedStockStatus);
-
-  console.log("Inventory Data: " +IventoryData);
   return (
     <DrawerAndNavLayout>
       <div>

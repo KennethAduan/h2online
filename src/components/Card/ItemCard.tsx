@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
-import { UpdateMaxStocks } from "../../firebase/services";
+import { UpdateMaxStocks, PartialStockUpdate } from "../../firebase/services";
 import PartialButton from "../partials/PartialButton";
 import {
   Card,
@@ -171,7 +171,7 @@ function ItemCard({
                 className="font-black text-black"
                 textGradient
               >
-                {status}
+                {status || "Not Available"}
               </Typography>
             </div>
           </CardBody>
@@ -200,7 +200,7 @@ function ItemCard({
               >
                 All
               </Button>
-              <PartialButton stock ={stock} maxStock ={maxStock} className="ml-2 disabled"></PartialButton>
+              <PartialButton itemId = {itemId} handlePartialBtn = {PartialStockUpdate}stock ={stock} maxStock ={maxStock} className="ml-2 disabled"></PartialButton>
             </div>
           </CardFooter>
         </Card>

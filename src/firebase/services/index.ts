@@ -64,7 +64,7 @@ export const UpdateMaxStocks = async (itemCode: string, maxStock: number) => {
   });
 }
 
-export const PartialStockUpdate = async (itemCode: string, maxStock: number) => {
+export const PartialStockUpdate = async (itemCode: string, count: number) => {
   const inventoryRef = collection(db, "inventory");
   const snapshot = await getDocs(query(inventoryRef, where("itemCode", "==", itemCode)));
 
@@ -74,7 +74,11 @@ export const PartialStockUpdate = async (itemCode: string, maxStock: number) => 
   }  
 
   snapshot.docs.forEach(async doc => {
-    await updateDoc(doc.ref, { stocks: maxStock });
+    const data = doc.data();
+    const currentStock = data.stocks || 0; // Get the current stock
+    const newStock = currentStock + count; // Add count to the current stock
+
+    await updateDoc(doc.ref, { stocks: newStock }); // Update the stock
   });
 }
 

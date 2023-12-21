@@ -2,13 +2,19 @@
 import { useState } from "react";
 import { Button, Card, Typography, CardBody } from "@material-tailwind/react";
 import "../../App.css";
-export default function PartialButton({ className , stock, maxStock, handleBtn}: any) {
+export default function PartialButton({ itemId, className , stock, maxStock, handlePartialBtn}: any) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
 
   const toggleOpen = () => setOpen(!open);
   const increment = () => setCount(count + 1);
   const decrement = () => setCount(count - 1);
+
+  const handleAddBtn = async (itemId: string, count: number) => {
+    await handlePartialBtn(itemId, count);
+    setOpen(false);
+    setCount(0);
+  }
 
   return (
     <div className="relative inline-block">
@@ -60,7 +66,7 @@ export default function PartialButton({ className , stock, maxStock, handleBtn}:
                   placeholder={undefined}
                   size="sm"
                   color="green"
-                  onClick={increment}
+                  onClick={()=>handleAddBtn(itemId, count)}
                 >
                     ✔
                 </Button>
