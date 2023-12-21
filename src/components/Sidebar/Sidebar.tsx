@@ -24,7 +24,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { logoutUserRedux } from "../../utils/redux/slice/userSlice";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import MonitorIcon from "@mui/icons-material/Monitor";
-const drawerWidth = 220;
+const drawerWidth = 250;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -104,6 +104,9 @@ export default function Sidebar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
+        <div>
+          <img src="/h2o-logo.png" className="w-auto h-auto p-2 mt-2" />
+        </div>
         {/* POS */}
 
         <List>
@@ -130,7 +133,9 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <MonitorIcon color={isActive('/pos') ? 'primary' : 'inherit'} />
+                  <MonitorIcon
+                    color={isActive("/pos") ? "primary" : "inherit"}
+                  />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
@@ -166,7 +171,9 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <AssessmentIcon color={isActive('/sales') ? 'primary' : 'inherit'}  />
+                  <AssessmentIcon
+                    color={isActive("/sales") ? "primary" : "inherit"}
+                  />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
@@ -202,7 +209,9 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <ChecklistIcon color={isActive('/inventory') ? 'primary' : 'inherit'} />
+                  <ChecklistIcon
+                    color={isActive("/inventory") ? "primary" : "inherit"}
+                  />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
@@ -256,7 +265,9 @@ export default function Sidebar() {
                     justifyContent: "center",
                   }}
                 >
-                  <LogoutIcon color={isActive('/logout') ? 'primary' : 'inherit'}  />
+                  <LogoutIcon
+                    color={isActive("/logout") ? "primary" : "inherit"}
+                  />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText

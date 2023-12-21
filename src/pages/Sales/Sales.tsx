@@ -18,8 +18,9 @@ import {
 import { COLORS } from "../../themes";
 import GetAverageSales from "../../firebase/hooks/GetAverageSales";
 import { useState } from "react";
+
 const Sales = () => {
-  const [average, setAverage] = useState(0);
+  const [averageState, setAverage] = useState(0);
   GetAverageSales().then((average) => {
     // console.log(`Today's average sales is: ₱${average.toFixed(2)}`);
     setAverage(average);
@@ -77,7 +78,7 @@ const Sales = () => {
       <div className="flex justify-center mb-12 space-x-10">
         <SalesCard
           titleSales="Average Sales"
-          totalSales={average}
+          totalSales={averageState}
           icon={salesIcon}
         />
         <SalesCard

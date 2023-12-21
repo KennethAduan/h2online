@@ -15,16 +15,16 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <div className="flex justify-around space-y-3">
+          {/* <div className="flex justify-around space-y-3">
             <div>
               <img src="/h2online.png" className="w-8 h-8 mt-2 " />
             </div>
 
             <h1 className="ml-2 text-lg font-bold">H2 Online</h1>
-          </div>
+          </div> */}
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 5, my: 2 }}>
             <div>
               <NotificationButton />
             </div>

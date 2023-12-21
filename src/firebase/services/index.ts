@@ -299,3 +299,21 @@ export const DeleteItemPurchaseOrderById = async (id: string) => {
     deleteDoc(doc.ref);
   });
 };
+
+export const AddNotificationsToFirebase = async (
+  message: string,
+  title: string
+) => {
+  try {
+    const userRef = collection(db, "notifications");
+    await addDoc(userRef, {
+      id: generateRandomId(),
+      title: title,
+      message: message,
+      date: Timestamp.fromDate(new Date()), // Use Firestore Timestamp
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
