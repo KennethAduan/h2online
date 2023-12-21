@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
-import { UpdateMaxStocks, PartialStockUpdate, calculateValueFromPercentage } from "../../firebase/services";
+import {
+  UpdateMaxStocks,
+  PartialStockUpdate,
+  calculateValueFromPercentage,
+} from "../../firebase/services";
 import PartialButton from "../partials/PartialButton";
 import {
   Card,
@@ -48,12 +52,14 @@ function ItemCard({
   const handleColor = (newStock: any) => {
     const medStock = calculateValueFromPercentage(50, maxStock) || 0;
     const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
-  
+
     let color = "bg-green-500";
-  
-    if (newStock <= lowStock) {  // Check for low stock first
+
+    if (newStock <= lowStock) {
+      // Check for low stock first
       color = "bg-red-500";
-    } else if (newStock <= medStock) {  // Then check for medium stock
+    } else if (newStock <= medStock) {
+      // Then check for medium stock
       color = "bg-yellow-500";
     }
     return color;
@@ -68,31 +74,31 @@ function ItemCard({
         showCancelButton: true, // Show cancel button
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, add it!"
+        confirmButtonText: "Yes, add it!",
       });
-  
+
       if (willAdd.isConfirmed) {
         const result = await UpdateMaxStocks(itemId, maxStock);
         if (result !== undefined && result !== null) {
           // Update was successful
-          console.log('Stocks are now at max');
-          await Swal.fire('Stocks are now at max', '', 'success');
+          console.log("Stocks are now at max");
+          await Swal.fire("Stocks are now at max", "", "success");
         } else {
           // Handle case where update is not successful
-          console.log('Update failed or no changes made');
+          console.log("Update failed or no changes made");
         }
       } else {
         // User did not confirm
         console.log("No change in stock");
-        await Swal.fire("No change in stock", '', 'info');
+        await Swal.fire("No change in stock", "", "info");
       }
     } catch (error: any) {
       // Handle any errors that occur during the process
-      console.error('An error occurred:', error);
-      await Swal.fire('An error occurred', error.message, 'error');
+      console.error("An error occurred:", error);
+      await Swal.fire("An error occurred", error.message, "error");
     }
-  }
-  
+  };
+
   return (
     <>
       <div className="relative mx-12 my-32 h-96 w-96">
@@ -224,7 +230,13 @@ function ItemCard({
               >
                 All
               </Button>
-              <PartialButton itemId = {itemId} handlePartialBtn = {PartialStockUpdate}stock ={stock} maxStock ={maxStock} className="ml-2 disabled"></PartialButton>
+              <PartialButton
+                itemId={itemId}
+                handlePartialBtn={PartialStockUpdate}
+                stock={stock}
+                maxStock={maxStock}
+                className="ml-2 disabled"
+              ></PartialButton>
             </div>
           </CardFooter>
         </Card>
@@ -234,7 +246,3 @@ function ItemCard({
 }
 
 export default ItemCard;
-function then(arg0: (willAdd: any) => void) {
-  throw new Error("Function not implemented.");
-}
-

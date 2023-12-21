@@ -21,9 +21,9 @@ export default function PartialButton({
     setOpen(false);
     setCount(0);
   };
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const value = e.target.value;
-    setCount(value === "" ? "" : Number(value));
+    setCount(value === "" ? 0 : Number(value));
   };
   return (
     <div className="relative inline-block">
@@ -41,22 +41,21 @@ export default function PartialButton({
         <div className="absolute z-10 -translate-y-[-20] mt-2 shadow-xl w-full">
           {" "}
           {/* This div positions the modal right below the button */}
-          <div className="flex justify-center items-center w-16">
-            <Card placeholder={undefined} >
+          <div className="flex items-center justify-center w-16">
+            <Card placeholder={undefined}>
               <CardBody placeholder={undefined} className="partial-button">
-                <div className="flex items-center justify-center space-x-4" >
+                <div className="flex items-center justify-center space-x-4">
                   <Button
                     className="symbol-button"
                     placeholder={undefined}
                     size="sm"
                     color="red"
                     onClick={decrement}
-                    
                   >
                     &ndash;
                   </Button>
                   <Input
-                  type="number"
+                    type="number"
                     placeholder={undefined}
                     value={count}
                     onChange={handleChange}
