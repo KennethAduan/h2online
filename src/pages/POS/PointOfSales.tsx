@@ -40,7 +40,7 @@ const PointOfSales = () => {
     dispatch(
       addItem({
         id: idPurchase,
-        serviceType: "Refill",
+        serviceType: "Purchase",
         name: product.item,
         itemCode: product.itemCode,
         quantity: 1, // You might want to adjust this
