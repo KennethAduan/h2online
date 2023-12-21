@@ -14,7 +14,7 @@ const ProductCard = ({
   productPrice,
 }: ProductCardProps) => {
   return (
-    <Card className="w-48" placeholder={undefined}>
+    <Card className="w-48 shadow-lg" placeholder={undefined} >
       <CardBody className="text-center" placeholder={undefined}>
         <img
           src={imageUrl}
