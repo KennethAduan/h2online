@@ -8,7 +8,7 @@ const LayoutCard: React.FC<LayoutCardProps> = ({ title, children }) => {
   return (
     <Card className="w-auto mt-6" placeholder={undefined}>
       <CardBody placeholder={undefined}>
-        <h1 className="text-2xl text-AccentFontColor">{title}</h1>
+        <h1 className="text-2xl font-bold text-AccentFontColor">{title}</h1>
         <hr />
         {/* Horizontal Line */}
         <div>{children}</div>

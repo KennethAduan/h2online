@@ -1,9 +1,8 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Typography,
-} from "@material-tailwind/react";
+import { Card, CardBody } from "@material-tailwind/react";
+
+const formatPeso = (amount: number) => {
+  return `₱ ${amount.toFixed(2)}`;
+};
 interface ProductCardProps {
   imageUrl: string;
   productName: string;
@@ -15,27 +14,21 @@ const ProductCard = ({
   productPrice,
 }: ProductCardProps) => {
   return (
-    <Card className="w-96" placeholder={undefined}>
-      <CardHeader floated={false} className="h-80" placeholder={undefined}>
-        <img src={imageUrl} alt="profile-picture" />
-      </CardHeader>
+    <Card className="w-48" placeholder={undefined}>
       <CardBody className="text-center" placeholder={undefined}>
-        <Typography
-          variant="h4"
-          color="blue-gray"
-          className="mb-2"
-          placeholder={undefined}
-        >
-          {productName}
-        </Typography>
-        <Typography
-          color="blue-gray"
-          className="font-medium"
-          textGradient
-          placeholder={undefined}
-        >
-          {productPrice}
-        </Typography>
+        <img
+          src={imageUrl}
+          className="rounded-lg w-44 h-44"
+          alt="profile-picture"
+        />
+        <div className="mt-4">
+          <h1 className="text-sm font-bold text-left text-AccentFontColor">
+            {productName}
+          </h1>
+          <h1 className="text-sm font-bold text-left text-AccentFontColor">
+            {formatPeso(productPrice)}
+          </h1>
+        </div>
       </CardBody>
     </Card>
   );
