@@ -16,7 +16,7 @@ import {
   //   setDoc,
 } from "firebase/firestore";
 import { UserInfoRedux } from "../../utils/redux/slice/userSlice";
-import { useAppDispatch } from "../../utils/redux/hooks";
+
 const updateStatus = (newStock: number, maxStock: number) => {
   const medStock = calculateValueFromPercentage(50, maxStock) || 0;
   const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
