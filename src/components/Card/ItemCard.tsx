@@ -45,18 +45,17 @@ function ItemCard({
     }
   }, []);
 
-  const handleColor = (stock: any) => {
+  const handleColor = (newStock: any) => {
     const medStock = calculateValueFromPercentage(50, maxStock) || 0;
     const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
-
+  
     let color = "bg-green-500";
-
-    if (stock <= medStock) {
-      color = "bg-yellow-500";
-    } else if (stock <= lowStock) {
+  
+    if (newStock <= lowStock) {  // Check for low stock first
       color = "bg-red-500";
+    } else if (newStock <= medStock) {  // Then check for medium stock
+      color = "bg-yellow-500";
     }
-
     return color;
   };
 
