@@ -4,7 +4,7 @@ const PrivateRoutes = () => {
   const location = useLocation();
   const userData = localStorage.getItem("userData");
 
-  if (!userData && location.pathname !== "/login") {
+  if (!userData && location.pathname !== "/") {
     return <Navigate to="/" />;
   }
 

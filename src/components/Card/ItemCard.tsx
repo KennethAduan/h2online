@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { UpdateMaxStocks } from "../../firebase/services";
 import PartialButton from "../partials/PartialButton";
 import {
   Card,
@@ -21,6 +22,7 @@ interface ItemCardProps {
   status: string;
   stock: number;
   maxStock: number;
+  itemId: string;
 }
 
 function ItemCard({
@@ -31,6 +33,7 @@ function ItemCard({
   status,
   color = "bg-green-500",
   maxStock,
+  itemId,
 }: ItemCardProps) {
   const card1Ref: any = useRef(null);
   const card2Ref: any = useRef(null);
@@ -54,6 +57,18 @@ function ItemCard({
     }
     return color;
   };
+
+
+  const handleAllBtn = async (itemId: string, maxStock: number) => {
+    const result = await UpdateMaxStocks(itemId, maxStock);
+   if(result){// update the state variable
+    console.log('Stocks are now at max');
+   }
+
+      console.log('Stocks are already at max');
+ 
+  }
+
   return (
     <>
       <div className="relative mx-12 my-32 h-96 w-96">
@@ -181,10 +196,11 @@ function ItemCard({
                 placeholder={undefined}
                 size="sm"
                 variant="outlined"
+                onClick={() => handleAllBtn(itemId, maxStock)}
               >
                 All
               </Button>
-              <PartialButton className="ml-2"></PartialButton>
+              <PartialButton stock ={stock} maxStock ={maxStock} className="ml-2 disabled"></PartialButton>
             </div>
           </CardFooter>
         </Card>

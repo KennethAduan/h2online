@@ -6,8 +6,12 @@ const FetchItemInventory = (status: string) => {
 
   useEffect(() => {
     const fetchItem = async () => {
-      const response = await GetItemsInventoryFirebase(status);
-      setItem(response);
+      try {
+        const response = await GetItemsInventoryFirebase(status);
+        setItem(response);
+      } catch (error) {
+        console.error('Failed to fetch items:', error);
+      }
     };
     fetchItem();
   }, [status]);

@@ -3,15 +3,16 @@ import { DrawerAndNavLayout } from "../../layout";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { useState } from "react";
 import { StockStatusButtons, ItemCard } from "../../components";
-import FetchItemInventory from "../../firebase/hooks/FetchItemInventory";
-
+// import FetchItemInventory from "../../firebase/hooks/FetchItemInventory";
+import getInventoryData from "../../firebase/hooks/GetItemStocks";
 const Inventory = () => {
   const [selectedStockStatus, setSelectedStockStatus] = useState<string>("All"); // Default to "All" StockStatus
   const handleSelectedStockStatus = (StockStatus: string) => {
     setSelectedStockStatus(StockStatus);
   };
-  const IventoryData = FetchItemInventory(selectedStockStatus);
-  // console.log(IventoryData);
+  const IventoryData = getInventoryData(selectedStockStatus);
+
+  console.log("Inventory Data: " +IventoryData);
   return (
     <DrawerAndNavLayout>
       <div>
@@ -25,7 +26,7 @@ const Inventory = () => {
           selectedStockStatus={selectedStockStatus}
         />
 
-        <div className="grid lg:grid-cols-4 md:grid-cols-2">
+        <div className="grid lg:grid-cols-3 md:grid-cols-1 ">
           {/* Changed to grid */}
           {IventoryData.map((item: any, index: number) => {
             return (
@@ -37,6 +38,7 @@ const Inventory = () => {
                   stock={item.stocks}
                   maxStock={item.maxStocks}
                   image={item.image}
+                  itemId={item.itemCode}
                 />
               </div>
             );
