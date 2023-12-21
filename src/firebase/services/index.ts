@@ -15,22 +15,23 @@ import {
   deleteDoc,
   //   setDoc,
 } from "firebase/firestore";
-
+import { UserInfoRedux } from "../../utils/redux/slice/userSlice";
+import { useAppDispatch } from "../../utils/redux/hooks";
 const updateStatus = (newStock: number, maxStock: number) => {
   const medStock = calculateValueFromPercentage(50, maxStock) || 0;
   const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
 
   let status = "Full Stock";
 
-  if (newStock <= lowStock) {  // Check for low stock first
+  if (newStock <= lowStock) {
+    // Check for low stock first
     status = "Low Stock";
-  } else if (newStock <= medStock) {  // Then check for medium stock
+  } else if (newStock <= medStock) {
+    // Then check for medium stock
     status = "Medium Stock";
   }
   return status;
-}
-
-
+};
 
 function generateRandomId() {
   let id = Math.floor(Math.random() * 9 + 1).toString(); // Ensure the first number is not 0
@@ -129,7 +130,6 @@ export const PartialStockUpdate = async (itemCode: string, count: number) => {
   }
 };
 
-
 export const GetRefillProductFirebase = async () => {
   let userRef: any = collection(db, "inventory");
 
@@ -167,8 +167,13 @@ async function getMaxStocks(itemCode: string) {
   return snapshot.docs[0].data().maxStocks;
 }
 
-const SubtractQuantityStocks = async (itemCode: string, quantity:number) => {
+const SubtractQuantityStocks = async (
+  itemCode: string,
+  quantity: number,
+  dispatch: any
+) => {
   const inventoryRef = collection(db, "inventory");
+
   const snapshot = await getDocs(
     query(inventoryRef, where("itemCode", "==", itemCode))
   );
@@ -183,12 +188,14 @@ const SubtractQuantityStocks = async (itemCode: string, quantity:number) => {
     const data = doc.data();
     const currentStock = Number(data.stocks) || 0; // Get the current stock
     const newStock = currentStock - Number(quantity); // Add count to the current stock
-   
-    if(currentStock === 0){
+
+    if (currentStock === 0) {
       toast.error("Stocks are now empty!");
+      dispatch(UserInfoRedux({ isSuccessOrder: false }));
     }
     if (newStock < 0) {
       toast.error("Stocks cannot be less than 0");
+      dispatch(UserInfoRedux({ isSuccessOrder: false }));
       continue; // Stop the update if new stock exceeds maximum stock
     }
 
@@ -196,15 +203,14 @@ const SubtractQuantityStocks = async (itemCode: string, quantity:number) => {
     console.log("Max Stock:", maxStock);
     const status = updateStatus(newStock, maxStock);
     await updateDoc(doc.ref, { stocks: newStock, status: status }); // Update the stock
-}
-}
-
-
+  }
+};
 
 export const AddPurchaseOrderFirebase = async (
   items: any[],
   totalAmount: number,
-  itemsNumber: number
+  itemsNumber: number,
+  dispatch: any
 ) => {
   const purchaseOrderRef = collection(db, "purchaseOrders");
   const id = generateRandomId();
@@ -226,11 +232,11 @@ export const AddPurchaseOrderFirebase = async (
       await addDoc(invoiceRef, item);
     }
 
-    items.forEach(item => {
+    items.forEach((item) => {
       const itemCode = item.itemCode;
-      let quantity = item.quantity;
+      const quantity = item.quantity;
       console.log(quantity);
-      SubtractQuantityStocks(itemCode, quantity);
+      SubtractQuantityStocks(itemCode, quantity, dispatch);
     });
   } catch (error) {
     console.error("Error adding purchase items:", error);
@@ -293,4 +299,3 @@ export const DeleteItemPurchaseOrderById = async (id: string) => {
     deleteDoc(doc.ref);
   });
 };
-

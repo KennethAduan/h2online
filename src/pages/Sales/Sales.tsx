@@ -9,7 +9,22 @@ import moment from "moment";
 import firebase from "firebase/compat/app";
 import ViewItemsDetails from "./View Items/ViewItemsDetails";
 import DeleteItemOrder from "./Delete Item/DeleteItemOrder";
+import {
+  salesIcon,
+  revenueIcon,
+  monthlySalesIcon,
+  totalSalesIcon,
+} from "../../components/Icons";
+import { COLORS } from "../../themes";
+import GetAverageSales from "../../firebase/hooks/GetAverageSales";
+import { useState } from "react";
 const Sales = () => {
+  const [average, setAverage] = useState(0);
+  GetAverageSales().then((average) => {
+    // console.log(`Today's average sales is: ₱${average.toFixed(2)}`);
+    setAverage(average);
+  });
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "Order ID", width: 250 },
     {
@@ -50,6 +65,7 @@ const Sales = () => {
   ];
 
   const rows = FetchPurchaseOrder();
+
   // console.log(rows);
   return (
     <DrawerAndNavLayout>
@@ -59,14 +75,34 @@ const Sales = () => {
         </p>
       </Breadcrumbs>
       <div className="flex justify-center mb-12 space-x-10">
-        <SalesCard titleSales="Average Sales" totalSales={2000} />
-        <SalesCard titleSales="Monthly Sales" totalSales={5000} />
+        <SalesCard
+          titleSales="Average Sales"
+          totalSales={average}
+          icon={salesIcon}
+        />
+        <SalesCard
+          titleSales="Monthly Sales"
+          totalSales={5000}
+          icon={monthlySalesIcon}
+        />
+        <SalesCard titleSales="Revenue" totalSales={5000} icon={revenueIcon} />
+        <SalesCard
+          titleSales="Profit"
+          totalSales={5000}
+          icon={totalSalesIcon}
+        />
       </div>
       {/* Data Table */}
-      <div style={{ maxHeight: "100%", width: "100%" }}>
+      <div
+        style={{
+          maxHeight: "100%",
+          width: "100%",
+        }}
+      >
         <DataGrid
           rows={rows}
           columns={columns}
+          sx={{ borderWidth: 1, borderColor: COLORS.primary }}
           getRowId={(row) => row.id}
           disableRowSelectionOnClick
           slots={{ toolbar: GridToolbar }}

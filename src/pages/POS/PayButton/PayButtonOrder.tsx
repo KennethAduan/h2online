@@ -8,6 +8,7 @@ const PayButtonOrder = () => {
   // Redux Items
   const items = useAppSelector((state) => state.order.items);
   const { totalAmount } = useAppSelector((state) => state.order);
+  const { isSuccessOrder } = useAppSelector((state) => state.user);
   const itemNumber = items.length;
   const dispatch = useAppDispatch();
   //   console.log("Items:", items);
@@ -22,16 +23,21 @@ const PayButtonOrder = () => {
       confirmButtonText: "Confirm",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await AddPurchaseOrderFirebase(items, totalAmount, itemNumber);
-        // Di ako marunong mag redux so eto muna
-        // if (isSuccess){
+        await AddPurchaseOrderFirebase(
+          items,
+          totalAmount,
+          itemNumber,
+          dispatch
+        );
+
+        if (isSuccessOrder) {
           dispatch(clearOrder());
-        Swal.fire({
-          title: "Success",
-          text: "Payment has been made",
-          icon: "success",
-        });
-        // }
+          Swal.fire({
+            title: "Success",
+            text: "Payment has been made",
+            icon: "success",
+          });
+        }
       }
     });
   };
