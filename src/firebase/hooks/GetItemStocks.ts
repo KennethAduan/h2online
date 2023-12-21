@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { QuerySnapshot } from "firebase/firestore";
 import { db } from "../config";
 
-export default function getInventoryData(status: string) {
+export default function GetInventoryData(status: string) {
   const [data, setData] = useState<any>([]);
 
   useEffect(() => {
-    let docRef:any = collection(db, "inventory");
+    let docRef: any = collection(db, "inventory");
 
     // Apply the status filter if status is not 'All'
     if (status !== "All") {

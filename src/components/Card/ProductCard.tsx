@@ -1,8 +1,6 @@
 import { Card, CardBody } from "@material-tailwind/react";
+import { formatPeso } from "../../utils/Helpers";
 
-const formatPeso = (amount: number) => {
-  return `₱ ${amount.toFixed(2)}`;
-};
 interface ProductCardProps {
   imageUrl: string;
   productName: string;
@@ -14,7 +12,7 @@ const ProductCard = ({
   productPrice,
 }: ProductCardProps) => {
   return (
-    <Card className="w-48 shadow-lg" placeholder={undefined} >
+    <Card className="w-48 shadow-lg" placeholder={undefined}>
       <CardBody className="text-center" placeholder={undefined}>
         <img
           src={imageUrl}

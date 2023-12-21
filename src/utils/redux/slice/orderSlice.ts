@@ -1,9 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface Item {
+  id: string;
   name: string;
+  itemCode: string;
   quantity: number;
   unitPrice: number;
   subPrice: number;
+  serviceType: string;
 }
 
 interface OrderSummaryState {
@@ -33,6 +36,22 @@ const orderSlice = createSlice({
         state.items.splice(index, 1);
       }
     },
+    increaseQuantity: (state, action: PayloadAction<string>) => {
+      const item = state.items.find((item) => item.id === action.payload);
+      if (item) {
+        item.quantity += 1;
+        item.subPrice = item.quantity * item.unitPrice;
+        state.totalAmount += item.unitPrice;
+      }
+    },
+    decreaseQuantity: (state, action: PayloadAction<string>) => {
+      const item = state.items.find((item) => item.id === action.payload);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+        item.subPrice = item.quantity * item.unitPrice;
+        state.totalAmount -= item.unitPrice;
+      }
+    },
     clearOrder: (state) => {
       state.items = [];
       state.totalAmount = 0;
@@ -40,6 +59,12 @@ const orderSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, clearOrder } = orderSlice.actions;
+export const {
+  addItem,
+  removeItem,
+  clearOrder,
+  increaseQuantity,
+  decreaseQuantity,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;
