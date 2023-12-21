@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { toast } from 'react-toastify';
 import { db } from "../config";
 import {
   collection,
@@ -60,7 +61,8 @@ export const UpdateMaxStocks = async (itemCode: string, maxStock: number) => {
   }  
 
   snapshot.docs.forEach(async doc => {
-    await updateDoc(doc.ref, { stocks: maxStock });
+    await updateDoc(doc.ref, { stocks: maxStock, status: "Full Stock" });
+    toast.success("Successfully updated the maximum stock!");
   });
 }
 
@@ -73,13 +75,38 @@ export const PartialStockUpdate = async (itemCode: string, count: number) => {
     return;
   }  
 
-  snapshot.docs.forEach(async doc => {
+  const docs = snapshot.docs;
+  for (const doc of docs) {
     const data = doc.data();
-    const currentStock = data.stocks || 0; // Get the current stock
-    const newStock = currentStock + count; // Add count to the current stock
+    const currentStock = Number(data.stocks) || 0; // Get the current stock
+    const newStock = currentStock + Number(count); // Add count to the current stock
+    const maxStock = await getMaxStocks(itemCode); // Get the maximum stock
+    console.log("Max Stock:", maxStock);
+    
+    if(newStock === maxStock){
+      toast.success("Stocks are now full!");
+    }
+    if (newStock > maxStock) {
+      toast.error("Stocks cannot be more than the maximum stock");
+      continue; // Stop the update if new stock exceeds maximum stock
+    }
 
-    await updateDoc(doc.ref, { stocks: newStock }); // Update the stock
-  });
+    const medStock = calculateValueFromPercentage(50, maxStock) || 0;
+    const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
+    console.log("Medium Stock:", medStock);
+    console.log("Low Stock:", lowStock);
+    
+    let status = "Full Stock";
+  
+    
+
+    if (newStock <= medStock) {
+      status = "Medium Stock";
+    } else if (newStock <= lowStock) {
+      status = "Low Stock";
+    }
+    await updateDoc(doc.ref, { stocks: newStock , status: status}); // Update the stock
+  }
 }
 
 export const GetRefillProductFirebase = async () => {
@@ -105,3 +132,14 @@ export const GetPurchaseProductFirebase = async () => {
 
   return purchaseData;
 };
+
+export function calculateValueFromPercentage(P: number, X: number) {
+  const Y = (P / 100) * X;
+  return Y;
+}
+
+async function getMaxStocks(itemCode: string) {
+  const inventoryRef = collection(db, "inventory");
+  const snapshot = await getDocs(query(inventoryRef, where("itemCode", "==", itemCode)));
+  return snapshot.docs[0].data().maxStocks;
+}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
-import { UpdateMaxStocks, PartialStockUpdate } from "../../firebase/services";
+import { useEffect, useRef } from "react";
+import { UpdateMaxStocks, PartialStockUpdate, calculateValueFromPercentage } from "../../firebase/services";
 import PartialButton from "../partials/PartialButton";
 import {
   Card,
@@ -46,15 +46,18 @@ function ItemCard({
     }
   }, []);
 
-  const handleColor = (stock: any, color: any) => {
-    const halfMaxStock = maxStock / 2;
-    if (stock > halfMaxStock) {
-      color = "bg-green-500";
-    } else if (stock < halfMaxStock) {
-      color = "bg-red-500";
-    } else {
+  const handleColor = (stock: any) => {
+    const medStock = calculateValueFromPercentage(50, maxStock) || 0;
+    const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
+
+    let color = "bg-green-500";
+
+    if (stock <= medStock) {
       color = "bg-yellow-500";
+    } else if (stock <= lowStock) {
+      color = "bg-red-500";
     }
+
     return color;
   };
 

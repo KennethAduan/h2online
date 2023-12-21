@@ -24,7 +24,7 @@ const Inventory = () => {
           selectedStockStatus={selectedStockStatus}
         />
 
-        <div className="grid lg:grid-cols-3 md:grid-cols-1 ">
+        <div className="grid lg:grid-cols-3 md:grid-cols-1 " >
           {/* Changed to grid */}
           {IventoryData.map((item: any, index: number) => {
             return (

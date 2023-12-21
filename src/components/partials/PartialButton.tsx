@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Button, Card, Typography, CardBody } from "@material-tailwind/react";
+import { Button, Card, Input, CardBody } from "@material-tailwind/react";
 import "../../App.css";
-export default function PartialButton({ itemId, className , stock, maxStock, handlePartialBtn}: any) {
+export default function PartialButton({
+  itemId,
+  className,
+  stock,
+  maxStock,
+  handlePartialBtn,
+}: any) {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -11,11 +17,11 @@ export default function PartialButton({ itemId, className , stock, maxStock, han
   const decrement = () => setCount(count - 1);
 
   const handleAddBtn = async (itemId: string, count: number) => {
-    await handlePartialBtn(itemId, count);
+    await handlePartialBtn(itemId, Number(count));
     setOpen(false);
     setCount(0);
-  }
-
+  };
+  console.log(typeof(count));
   return (
     <div className="relative inline-block">
       {" "}
@@ -25,7 +31,6 @@ export default function PartialButton({ itemId, className , stock, maxStock, han
         placeholder={undefined}
         size="sm"
         onClick={toggleOpen}
-        disabled = {stock === maxStock}
       >
         Partial
       </Button>
@@ -34,45 +39,48 @@ export default function PartialButton({ itemId, className , stock, maxStock, han
           {" "}
           {/* This div positions the modal right below the button */}
           <div className="flex justify-center items-center">
-          <Card placeholder={undefined} >
-            <CardBody placeholder={undefined} className="partial-button">
-              <div className="flex items-center justify-center space-x-4">
-                <Button
-                  className="symbol-button"
-                  placeholder={undefined}
-                  size="sm"
-                  color="red"
-                  onClick={decrement}
-                >
-                  &ndash;
-                </Button>
-                <Typography placeholder={undefined}>{count}</Typography>
-                <Button
-                  className="symbol-button"
-                  placeholder={undefined}
-                  size="sm"
-                  color="green"
-                  onClick={increment}
-                >
-                  +
-                </Button>
-               
-              </div>
-            </CardBody>
-        
-          </Card>
-             <Button
-                  className="symbol-button w-11"
-                  placeholder={undefined}
-                  size="sm"
-                  color="green"
-                  onClick={()=>handleAddBtn(itemId, count)}
-                >
-                    ✔
-                </Button>
+            <Card placeholder={undefined}>
+              <CardBody placeholder={undefined} className="partial-button">
+                <div className="flex items-center justify-center space-x-4">
+                  <Button
+                    className="symbol-button"
+                    placeholder={undefined}
+                    size="sm"
+                    color="red"
+                    onClick={decrement}
+                  >
+                    &ndash;
+                  </Button>
+                  <Input
+                  type="number"
+                    placeholder={undefined}
+                    value={count}
+                    onChange={(e) => setCount(Number(e.target.value))}
+                    crossOrigin={undefined}
+                  />
+                  <Button
+                    className="symbol-button"
+                    placeholder={undefined}
+                    size="sm"
+                    color="green"
+                    onClick={increment}
+                    disabled={stock === maxStock}
+                  >
+                    +
+                  </Button>
+                </div>
+              </CardBody>
+            </Card>
+            <Button
+              className="symbol-button w-11"
+              placeholder={undefined}
+              size="sm"
+              color="green"
+              onClick={() => handleAddBtn(itemId, count)}
+            >
+              ✔
+            </Button>
           </div>
-       
-       
         </div>
       )}
     </div>
