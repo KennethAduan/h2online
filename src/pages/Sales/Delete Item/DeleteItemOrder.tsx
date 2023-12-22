@@ -76,8 +76,10 @@ const DeleteItemOrder = (id: any) => {
         onOpen={handleOpenModal}
       >
         <div>
-          <h1>Are you sure you want to delete this item?</h1>
-          <h1>Item ID: {id.id}</h1>
+          <h1 className="md:text-lg lg:text-xl">
+            Are you sure you want to delete this item?
+          </h1>
+          <h1 className="md:text-lg lg:text-xl">Item ID: {id.id}</h1>
         </div>
         {/* Button */}
         <div className="flex justify-center mt-4 space-x-12">

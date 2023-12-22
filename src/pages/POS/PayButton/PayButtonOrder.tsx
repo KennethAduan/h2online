@@ -8,7 +8,7 @@ const PayButtonOrder = () => {
   // Redux Items
   const items = useAppSelector((state) => state.order.items);
   const { totalAmount } = useAppSelector((state) => state.order);
-  const { isSuccessOrder } = useAppSelector((state) => state.user);
+  // const { isSuccessOrder } = useAppSelector((state) => state.user);
   const itemNumber = items.length;
   const dispatch = useAppDispatch();
   // console.log(isSuccessOrder);
@@ -24,20 +24,35 @@ const PayButtonOrder = () => {
       confirmButtonText: "Confirm",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        if (items.length === 0) {
+          Swal.fire({
+            title: "Error",
+            text: "Please add orders to your account",
+            icon: "error",
+          });
+          return;
+        }
         await AddPurchaseOrderFirebase(
           items,
           totalAmount,
           itemNumber,
           dispatch
         );
-        if (isSuccessOrder) {
-          Swal.fire({
-            title: "Success",
-            text: "Payment has been made",
-            icon: "success",
-          });
-          dispatch(clearOrder());
-        }
+        dispatch(clearOrder());
+        Swal.fire({
+          title: "Success",
+          text: "Payment has been made",
+          icon: "success",
+        });
+        // Need dito ma fix yung stocks
+        // if (isSuccessOrder) {
+        //   Swal.fire({
+        //     title: "Success",
+        //     text: "Payment has been made",
+        //     icon: "success",
+        //   });
+        //   dispatch(clearOrder());
+        // }
       }
     });
   };
