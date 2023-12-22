@@ -80,7 +80,7 @@ const Sales = () => {
           SALES
         </p>
       </Breadcrumbs>
-      <div className="flex justify-center mb-12 space-x-10">
+      <div className="grid items-center justify-center grid-cols-1 gap-4 mb-12 md:grid-cols-2 lg:grid-cols-4">
         <SalesCard
           titleSales="Average Sales"
           totalSales={averageState}

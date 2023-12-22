@@ -322,3 +322,33 @@ export const AddNotificationsToFirebase = async (
     throw error;
   }
 };
+
+const notifiedItems = new Set(); // This holds the item names that have been notified
+
+export const CheckItemStocksFirebase = () => {
+  const inventoryRef = collection(db, "inventory");
+
+  // Real-time listener
+  onSnapshot(inventoryRef, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added" || change.type === "modified") {
+        const data = change.doc.data();
+        const itemName = data.item;
+        const stocks = data.stocks;
+
+        // Check if the stock is 0 and hasn't been notified yet
+        if (stocks === 0 && !notifiedItems.has(itemName)) {
+          AddNotificationsToFirebase(
+            `Item ${itemName} is out of stock!`,
+            "Stocks Report"
+          );
+          notifiedItems.add(itemName); // Prevent further notifications for the same item
+        }
+        // If the stock is replenished, remove from notified items
+        if (stocks > 0 && notifiedItems.has(itemName)) {
+          notifiedItems.delete(itemName);
+        }
+      }
+    });
+  });
+};

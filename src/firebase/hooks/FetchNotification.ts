@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { collection, onSnapshot, QuerySnapshot } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  QuerySnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../config";
 
@@ -9,8 +15,9 @@ const FetchNotification = () => {
 
   useEffect(() => {
     const docRef: any = collection(db, "notifications");
+    const queryRef: any = query(docRef, orderBy("date", "desc")); // Order by "date" in descending order
 
-    const unsubscribe = onSnapshot(docRef, (snapshot: QuerySnapshot) => {
+    const unsubscribe = onSnapshot(queryRef, (snapshot: QuerySnapshot) => {
       const dataCollection = snapshot.docs.map((doc) => doc.data());
       setData(dataCollection);
     });

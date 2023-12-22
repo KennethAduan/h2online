@@ -3,11 +3,16 @@ import "react-toastify/dist/ReactToastify.css";
 import MainRoutes from "./routes";
 import CheckAverageSales from "./utils/Helpers/CheckAverageSales";
 import { useEffect, useState } from "react";
+import { CheckItemStocksFirebase } from "./firebase/services";
+
 const App = () => {
-  CheckAverageSales();
   const [deviceType, setDeviceType] = useState("desktop"); // Default to desktop
+  CheckAverageSales(); // You might want to handle this similarly if it's causing re-renders
 
   useEffect(() => {
+    // Perform actions when the App component mounts
+    CheckItemStocksFirebase(); // Now this only triggers once when the App component mounts
+
     const handleResize = () => {
       const width = window.innerWidth;
       if (width <= 768) {
@@ -27,7 +32,8 @@ const App = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, []); // Empty dependency array means this effect runs once on mount
+
   if (deviceType === "mobile") {
     // Render a message or UI specific for mobile devices using Tailwind CSS
     return (
@@ -41,6 +47,7 @@ const App = () => {
       </main>
     );
   }
+
   return (
     <div>
       <MainRoutes />
