@@ -6,6 +6,7 @@ import { clearOrder } from "../../../utils/redux/slice/orderSlice";
 
 const PayButtonOrder = () => {
   // Redux Items
+
   const items = useAppSelector((state) => state.order.items);
   const { totalAmount } = useAppSelector((state) => state.order);
   // const { isSuccessOrder } = useAppSelector((state) => state.user);
@@ -13,6 +14,12 @@ const PayButtonOrder = () => {
   const dispatch = useAppDispatch();
   // console.log(isSuccessOrder);
   //   console.log("Items:", items);
+
+  const handleAddPurchaseOrder = async () => {
+    const result = await AddPurchaseOrderFirebase(items, totalAmount, itemNumber, dispatch);
+    return result;
+  };
+
   const handlePay = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -32,27 +39,25 @@ const PayButtonOrder = () => {
           });
           return;
         }
-        await AddPurchaseOrderFirebase(
-          items,
-          totalAmount,
-          itemNumber,
-          dispatch
-        );
-        dispatch(clearOrder());
-        Swal.fire({
-          title: "Success",
-          text: "Payment has been made",
-          icon: "success",
-        });
+        const isSuccess = await handleAddPurchaseOrder();
+        console.log("Is Success: " + isSuccess);
         // Need dito ma fix yung stocks
-        // if (isSuccessOrder) {
-        //   Swal.fire({
-        //     title: "Success",
-        //     text: "Payment has been made",
-        //     icon: "success",
-        //   });
-        //   dispatch(clearOrder());
-        // }
+        if (isSuccess) {
+          console.log("Success");
+          Swal.fire({
+            title: "Success",
+            text: "Payment has been made",
+            icon: "success",
+          });
+          dispatch(clearOrder());
+        } else {
+          console.log("Failed"); 
+          Swal.fire({
+            title: "Error",
+            text: "Payment has not been made",
+            icon: "error",
+          });
+        }
       }
     });
   };
