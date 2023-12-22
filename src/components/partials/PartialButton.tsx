@@ -23,7 +23,7 @@ export default function PartialButton({
   };
   const handleChange = (e: any) => {
     const value = e.target.value;
-    setCount(value === "" ? 0 : Number(value));
+    setCount(value === "" ? "" : Number(value));// Don't change this line of code
   };
   return (
     <div className="relative inline-block">
