@@ -16,7 +16,6 @@ import {
   //   setDoc,
 } from "firebase/firestore";
 import { UserInfoRedux } from "../../utils/redux/slice/userSlice";
-import { AppDispatch } from "../../utils/redux/store";
 const updateStatus = (newStock: number, maxStock: number) => {
   const medStock = calculateValueFromPercentage(50, maxStock) || 0;
   const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
@@ -167,13 +166,8 @@ async function getMaxStocks(itemCode: string) {
   return snapshot.docs[0].data().maxStocks;
 }
 
-const SubtractQuantityStocks = async (
-  itemCode: string,
-  quantity: number,
-  dispatch: AppDispatch
-) => {
+const SubtractQuantityStocks = async (itemName: string, itemCode: string, quantity:number) => {
   const inventoryRef = collection(db, "inventory");
-
   const snapshot = await getDocs(
     query(inventoryRef, where("itemCode", "==", itemCode))
   );
@@ -187,35 +181,31 @@ const SubtractQuantityStocks = async (
   for (const doc of docs) {
     const data = doc.data();
     const currentStock = Number(data.stocks) || 0; // Get the current stock
-    const newStock = currentStock - Number(quantity); // Subtract quantity from the current stock
+    const newStock = currentStock - Number(quantity); // Add count to the current stock
 
-    if (currentStock === 0) {
-      // toast.error("Stocks are now empty!");
-      dispatch(UserInfoRedux({ isSuccessOrder: false }));
-      continue; // Stop the update if new stock exceeds maximum stock
+    if(currentStock === 0){
+      toast.error(`${itemName} Stocks are now empty!`);
+      return false;
     }
     if (newStock < 0) {
-      // toast.error("Stocks cannot be less than 0");
-      dispatch(UserInfoRedux({ isSuccessOrder: false }));
+      toast.error("Stocks cannot be less than 0");
+      return false;
       continue; // Stop the update if new stock exceeds maximum stock
-    } else if (currentStock > quantity) {
-      dispatch(UserInfoRedux({ isSuccessOrder: true }));
-      continue; // Stop the update if current stock is higher than the quantity
-    } else {
-      const maxStock = await getMaxStocks(itemCode); // Get the maximum stock
-      // console.log("Max Stock:", maxStock);
-      const status = updateStatus(newStock, maxStock);
-      await updateDoc(doc.ref, { stocks: newStock, status: status }); // Update the stock
-      dispatch(UserInfoRedux({ isSuccessOrder: true }));
     }
-  }
-};
+
+    const maxStock = await getMaxStocks(itemCode); // Get the maximum stock
+    console.log("Max Stock:", maxStock);
+    const status = updateStatus(newStock, maxStock);
+    await updateDoc(doc.ref, { stocks: newStock, status: status }); // Update the stock
+    return true;
+}
+}
+
 
 export const AddPurchaseOrderFirebase = async (
   items: any[],
   totalAmount: number,
   itemsNumber: number,
-  dispatch: AppDispatch
 ) => {
   const purchaseOrderRef = collection(db, "purchaseOrders");
   const id = generateRandomId();
@@ -227,26 +217,27 @@ export const AddPurchaseOrderFirebase = async (
     itemsNumber: itemsNumber,
     totalAmount: totalAmount,
   });
-
-  try {
-    // Use the reference from the newly created purchase order to add items to its subcollection
+ // Use the reference from the newly created purchase order to add items to its subcollection
     const invoiceRef = collection(orderDocRef, "purchaseItems");
 
     // Add each cart item as a separate document in the invoice collection
     for (const item of items) {
       await addDoc(invoiceRef, item);
     }
+    let result = true;
 
-    items.forEach((item) => {
+    for (const item of items) {
       const itemCode = item.itemCode;
       const quantity = item.quantity;
-      // console.log(quantity);
-      SubtractQuantityStocks(itemCode, quantity, dispatch);
-    });
-  } catch (error) {
-    console.error("Error adding purchase items:", error);
-    throw error;
-  }
+      const itemName = item.name;
+      console.log("Item Name: " + itemName);
+      result = await SubtractQuantityStocks(itemName ,itemCode, quantity) || false;
+      
+      if (!result) {
+        break;
+      }
+    }
+    return result;
 };
 
 export const GetOrderItemsByOrderNumber = async (orderNumber: string) => {
