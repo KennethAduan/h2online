@@ -18,7 +18,7 @@ const initialState: userState = {
   userLastName: "",
   userPassword: "",
   isOpenNav: false,
-  isSuccessOrder: false,
+  isSuccessOrder: true,
   averageSalesRedux: 0,
 };
 
