@@ -11,6 +11,7 @@ import {
   Typography,
   Avatar,
   Button,
+  Progress,
 } from "@material-tailwind/react";
 import Swal from "sweetalert2";
 interface ItemCardProps {
@@ -94,6 +95,23 @@ function ItemCard({
       console.error("An error occurred:", error);
       await Swal.fire("An error occurred", error.message, "error");
     }
+  };
+
+  const StockProgressBar = ({ stock, maxStock }: { stock: number, maxStock: number }) => {
+    let color;
+    const percentage = (stock / maxStock) * 100;
+  
+    if (percentage >= 75) {
+      color = 'green';
+    } else if (percentage >= 25) {
+      color = 'yellow';
+    } else {
+      color = 'red';
+    }
+  
+    return (
+      <Progress color={color} value={percentage} />
+    );
   };
 
   return (
@@ -206,7 +224,7 @@ function ItemCard({
             placeholder={undefined}
             className="flex items-center justify-between pt-0"
           >
-            <div className="flex items-center -space-x-3">
+            {/* <div className="flex items-center -space-x-3">
               <Avatar
                 placeholder={undefined}
                 size="sm"
@@ -234,7 +252,9 @@ function ItemCard({
                 maxStock={maxStock}
                 className="ml-2 disabled"
               ></PartialButton>
-            </div>
+             
+            </div> */}
+              {stock > 0 ? <StockProgressBar stock={stock} maxStock={maxStock} /> : <p>Out of stock</p>}
           </CardFooter>
         </Card>
       </div>
