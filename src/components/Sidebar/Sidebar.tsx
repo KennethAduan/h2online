@@ -81,6 +81,12 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+const navItems = [
+  { text: "POS", icon: MonitorIcon, path: "/pos" },
+  { text: "Sales", icon: AssessmentIcon, path: "/sales" },
+  { text: "Inventory", icon: ChecklistIcon, path: "/inventory" },
+];
+
 export default function Sidebar() {
   const location = useLocation();
   const theme = useTheme();
@@ -104,124 +110,43 @@ export default function Sidebar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <div>
-          <img src="/h2o-logo.png" className="w-auto h-auto p-2 mt-2" />
-        </div>
+
         {/* POS */}
 
         <List>
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => {
-              navigate("/pos");
-              document.title = "H2 Online | POS";
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: isOpenNav ? "initial" : "center",
-                px: 2.5,
-              }}
+          {navItems.map(({ text, icon: Icon, path }) => (
+            <ListItem
+              disablePadding
+              sx={{ display: "block" }}
+              key={text}
+              onClick={() => navigate(path)}
             >
-              <Tooltip title="POS" placement="right">
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: isOpenNav ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <MonitorIcon
-                    color={isActive("/pos") ? "primary" : "inherit"}
-                  />
-                </ListItemIcon>
-              </Tooltip>
-              <ListItemText
-                primary={"POS"}
-                sx={{ opacity: isOpenNav ? 1 : 0, color: "white" }}
-              />
-            </ListItemButton>
-          </ListItem>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: isOpenNav ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <Tooltip title={text} placement="right">
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: isOpenNav ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Icon color={isActive(path) ? "primary" : "inherit"} />
+                  </ListItemIcon>
+                </Tooltip>
+                <ListItemText
+                  primary={text}
+                  sx={{ opacity: isOpenNav ? 1 : 0, color: "white" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
-
-        {/* sales */}
-        <List>
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => {
-              navigate("/sales");
-              document.title = "H2 Online | sales";
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: isOpenNav ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <Tooltip title="sales" placement="right">
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: isOpenNav ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <AssessmentIcon
-                    color={isActive("/sales") ? "primary" : "inherit"}
-                  />
-                </ListItemIcon>
-              </Tooltip>
-              <ListItemText
-                primary={"sales"}
-                sx={{ opacity: isOpenNav ? 1 : 0, color: "white" }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-
-        {/* Inventory */}
-        <List>
-          <ListItem
-            disablePadding
-            sx={{ display: "block" }}
-            onClick={() => {
-              navigate("/inventory");
-              document.title = "H2 Online | Inventory";
-            }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: isOpenNav ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <Tooltip title="Inventory" placement="right">
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: isOpenNav ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <ChecklistIcon
-                    color={isActive("/inventory") ? "primary" : "inherit"}
-                  />
-                </ListItemIcon>
-              </Tooltip>
-              <ListItemText
-                primary={"Sales"}
-                sx={{ opacity: isOpenNav ? 1 : 0, color: "white" }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-
         {/* Logout */}
         <List>
           <ListItem

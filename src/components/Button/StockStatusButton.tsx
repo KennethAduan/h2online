@@ -31,9 +31,9 @@ export const StockStatusButtons: React.FC<StockStatusButtonsProps> = ({
               variant="text"
               color="gray"
               ripple={true}
-              className={`hover:bg-[#1976D2] hover:text-white ${
+              className={`hover:bg-PrimaryBackGround hover:text-white ${
                 selectedStockStatus === StockStatus
-                  ? "bg-[#1976D2] text-white"
+                  ? "bg-PrimaryBackGround text-white"
                   : ""
               }`}
               onClick={() => handleStockStatusClick(StockStatus)}

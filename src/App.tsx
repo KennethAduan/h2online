@@ -4,7 +4,16 @@ import MainRoutes from "./routes";
 import CheckAverageSales from "./utils/Helpers/CheckAverageSales";
 import { useEffect, useState } from "react";
 import { CheckItemStocksFirebase } from "./firebase/services";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { COLORS } from "./themes";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: COLORS.primary,
+    },
+  },
+});
 const App = () => {
   const [deviceType, setDeviceType] = useState("desktop"); // Default to desktop
   CheckAverageSales(); // You might want to handle this similarly if it's causing re-renders
@@ -50,8 +59,10 @@ const App = () => {
 
   return (
     <div>
-      <MainRoutes />
-      <ToastContainer />
+      <ThemeProvider theme={theme}>
+        <MainRoutes />
+        <ToastContainer />
+      </ThemeProvider>
     </div>
   );
 };

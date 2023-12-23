@@ -13,7 +13,6 @@ import {
   salesIcon,
   revenueIcon,
   monthlySalesIcon,
-  totalSalesIcon,
 } from "../../components/Icons";
 import { COLORS } from "../../themes";
 import GetAverageSales from "../../firebase/hooks/GetAverageSales";
@@ -80,7 +79,7 @@ const Sales = () => {
           SALES
         </p>
       </Breadcrumbs>
-      <div className="grid items-center justify-center grid-cols-1 gap-4 mb-12 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid items-center justify-center grid-cols-1 gap-4 mb-12 md:grid-cols-2 lg:grid-cols-3">
         <SalesCard
           titleSales="Average Sales"
           totalSales={averageState}
@@ -92,11 +91,6 @@ const Sales = () => {
           icon={monthlySalesIcon}
         />
         <SalesCard titleSales="Revenue" totalSales={5000} icon={revenueIcon} />
-        <SalesCard
-          titleSales="Profit"
-          totalSales={5000}
-          icon={totalSalesIcon}
-        />
       </div>
       {/* Data Table */}
       <div

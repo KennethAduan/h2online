@@ -1,4 +1,4 @@
-import { Button } from "@material-tailwind/react";
+import { Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { useAppSelector, useAppDispatch } from "../../../utils/redux/hooks";
 import { AddPurchaseOrderFirebase } from "../../../firebase/services";
@@ -16,7 +16,11 @@ const PayButtonOrder = () => {
   //   console.log("Items:", items);
 
   const handleAddPurchaseOrder = async () => {
-    const result = await AddPurchaseOrderFirebase(items, totalAmount, itemNumber, dispatch);
+    const result = await AddPurchaseOrderFirebase(
+      items,
+      totalAmount,
+      itemNumber
+    );
     return result;
   };
 
@@ -51,7 +55,7 @@ const PayButtonOrder = () => {
           });
           dispatch(clearOrder());
         } else {
-          console.log("Failed"); 
+          console.log("Failed");
           Swal.fire({
             title: "Error",
             text: "Payment has not been made",
@@ -64,12 +68,11 @@ const PayButtonOrder = () => {
   return (
     <div>
       <Button
-        color="blue"
-        placeholder={undefined}
-        size="lg"
-        fullWidth
-        className="w-96"
+        variant="contained"
         onClick={handlePay}
+        fullWidth
+        size="large"
+        sx={{ width: 300 }}
       >
         PAY
       </Button>

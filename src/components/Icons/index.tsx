@@ -4,7 +4,7 @@ const salesIcon = (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    className="w-12 h-12 mt-12"
+    className="mt-12 lg:w-16 lg:h-16 md:w-12 md:h-12"
     color={COLORS.primary}
   >
     <path
@@ -25,7 +25,7 @@ const monthlySalesIcon = (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    className="w-12 h-12 mt-12"
+    className="mt-12 lg:w-16 lg:h-16 md:w-12 md:h-12"
     color={COLORS.primary}
   >
     <path
@@ -41,7 +41,7 @@ const revenueIcon = (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    className="w-12 h-12 mt-12"
+    className="mt-12 lg:w-16 lg:h-16 md:w-12 md:h-12"
     color={COLORS.primary}
   >
     <path
@@ -57,7 +57,7 @@ const totalSalesIcon = (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="currentColor"
-    className="w-12 h-12 mt-12"
+    className="mt-12 lg:w-16 lg:h-16 md:w-12 md:h-12"
     color={COLORS.primary}
   >
     <path d="M12 7.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />

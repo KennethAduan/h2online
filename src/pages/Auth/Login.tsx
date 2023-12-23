@@ -39,7 +39,7 @@ const Login = () => {
     try {
       setLoading(true);
       const checkUserCredentials = await checkUserData(userName, password);
-      console.log(checkUserCredentials);
+      // console.log(checkUserCredentials);
       if (!checkUserCredentials.empty) {
         const userData = checkUserCredentials.docs[0].data();
 

@@ -20,7 +20,7 @@ const SalesCard = ({ titleSales, totalSales, icon }: SalesCardProps) => {
           <div className="mt-10">
             <Typography
               variant="h3"
-              className="text-lg text-PrimaryBackGround sm:text-xl md:text-2xl" // Responsive text size
+              className="text-lg text-PrimaryBackGround sm:text-xl md:text-4xl " // Responsive text size
               placeholder={undefined}
             >
               {formatPeso(totalSales)}

@@ -74,6 +74,7 @@ const DeleteItemOrder = (id: any) => {
         isOpen={isModalOpen}
         onClose={handleCancel}
         onOpen={handleOpenModal}
+        color={"red"}
       >
         <div>
           <h1 className="md:text-lg lg:text-xl">

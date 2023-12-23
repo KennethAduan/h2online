@@ -15,7 +15,7 @@ import {
   deleteDoc,
   //   setDoc,
 } from "firebase/firestore";
-import { UserInfoRedux } from "../../utils/redux/slice/userSlice";
+
 const updateStatus = (newStock: number, maxStock: number) => {
   const medStock = calculateValueFromPercentage(50, maxStock) || 0;
   const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
@@ -166,7 +166,11 @@ async function getMaxStocks(itemCode: string) {
   return snapshot.docs[0].data().maxStocks;
 }
 
-const SubtractQuantityStocks = async (itemName: string, itemCode: string, quantity:number) => {
+const SubtractQuantityStocks = async (
+  itemName: string,
+  itemCode: string,
+  quantity: number
+) => {
   const inventoryRef = collection(db, "inventory");
   const snapshot = await getDocs(
     query(inventoryRef, where("itemCode", "==", itemCode))
@@ -183,7 +187,7 @@ const SubtractQuantityStocks = async (itemName: string, itemCode: string, quanti
     const currentStock = Number(data.stocks) || 0; // Get the current stock
     const newStock = currentStock - Number(quantity); // Add count to the current stock
 
-    if(currentStock === 0){
+    if (currentStock === 0) {
       toast.error(`${itemName} Stocks are now empty!`);
       return false;
     }
@@ -198,14 +202,13 @@ const SubtractQuantityStocks = async (itemName: string, itemCode: string, quanti
     const status = updateStatus(newStock, maxStock);
     await updateDoc(doc.ref, { stocks: newStock, status: status }); // Update the stock
     return true;
-}
-}
-
+  }
+};
 
 export const AddPurchaseOrderFirebase = async (
   items: any[],
   totalAmount: number,
-  itemsNumber: number,
+  itemsNumber: number
 ) => {
   const purchaseOrderRef = collection(db, "purchaseOrders");
   const id = generateRandomId();
@@ -217,27 +220,28 @@ export const AddPurchaseOrderFirebase = async (
     itemsNumber: itemsNumber,
     totalAmount: totalAmount,
   });
- // Use the reference from the newly created purchase order to add items to its subcollection
-    const invoiceRef = collection(orderDocRef, "purchaseItems");
+  // Use the reference from the newly created purchase order to add items to its subcollection
+  const invoiceRef = collection(orderDocRef, "purchaseItems");
 
-    // Add each cart item as a separate document in the invoice collection
-    for (const item of items) {
-      await addDoc(invoiceRef, item);
-    }
-    let result = true;
+  // Add each cart item as a separate document in the invoice collection
+  for (const item of items) {
+    await addDoc(invoiceRef, item);
+  }
+  let result = true;
 
-    for (const item of items) {
-      const itemCode = item.itemCode;
-      const quantity = item.quantity;
-      const itemName = item.name;
-      console.log("Item Name: " + itemName);
-      result = await SubtractQuantityStocks(itemName ,itemCode, quantity) || false;
-      
-      if (!result) {
-        break;
-      }
+  for (const item of items) {
+    const itemCode = item.itemCode;
+    const quantity = item.quantity;
+    const itemName = item.name;
+    console.log("Item Name: " + itemName);
+    result =
+      (await SubtractQuantityStocks(itemName, itemCode, quantity)) || false;
+
+    if (!result) {
+      break;
     }
-    return result;
+  }
+  return result;
 };
 
 export const GetOrderItemsByOrderNumber = async (orderNumber: string) => {
