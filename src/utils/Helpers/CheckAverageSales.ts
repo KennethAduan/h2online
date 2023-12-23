@@ -1,5 +1,5 @@
 import GetAverageSales from "../../firebase/hooks/GetAverageSales";
-import { AddNotificationsToFirebase } from "../../firebase/services";
+import { AddNotificationsToFirebase } from "../../firebase/services/notificationManager";
 import { useEffect } from "react";
 
 const CheckAverageSales = () => {

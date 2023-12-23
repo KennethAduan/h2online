@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { GetRefillProductFirebase } from "../services";
+import { GetRefillProductFirebase } from "../services/inventoryManager";
 const FetchRefillProduct = () => {
   const [item, setItem] = useState<any>([]);
 

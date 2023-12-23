@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
-import {
-  UpdateMaxStocks,
-  PartialStockUpdate,
-  calculateValueFromPercentage,
-} from "../../firebase/services";
+import { calculateValueFromPercentage } from "../../firebase/services/utilities";
+import { UpdateMaxStocks, PartialStockUpdate } from "../../firebase/services/inventoryManager";
 import PartialButton from "../partials/PartialButton";
 import {
   Card,

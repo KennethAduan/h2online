@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import ModalComponent from "../../../components/Modal/ModalComponent";
-import { DeleteItemPurchaseOrderById } from "../../../firebase/services";
+import { DeleteItemPurchaseOrderById} from "../../../firebase/services/orderManager";
 import Swal from "sweetalert2";
 const Icon = (
   <svg

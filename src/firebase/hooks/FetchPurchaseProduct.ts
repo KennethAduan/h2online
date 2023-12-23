@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { GetPurchaseProductFirebase } from "../services";
+import { GetPurchaseProductFirebase } from "../services/inventoryManager";
 const FetchPurchaseProduct = () => {
   const [item, setItem] = useState<any>([]);
 

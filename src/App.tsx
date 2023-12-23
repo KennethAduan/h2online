@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import MainRoutes from "./routes";
 import CheckAverageSales from "./utils/Helpers/CheckAverageSales";
 import { useEffect, useState } from "react";
-import { CheckItemStocksFirebase } from "./firebase/services";
+import { CheckItemStocksFirebase } from "./firebase/services/notificationManager";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { COLORS } from "./themes";
 

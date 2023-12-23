@@ -10,7 +10,7 @@ import {
 import Swal from "sweetalert2";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { useNavigate } from "react-router-dom";
-import { checkUserData } from "../../firebase/services";
+import { checkUserData } from "../../firebase/services/authManager";
 import { BiSolidUser } from "react-icons/bi";
 import { AiFillLock } from "react-icons/ai";
 import { UserInfoRedux } from "../../utils/redux/slice/userSlice";

@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { useAppSelector, useAppDispatch } from "../../../utils/redux/hooks";
-import { AddPurchaseOrderFirebase } from "../../../firebase/services";
+import { AddPurchaseOrderFirebase } from "../../../firebase/services/orderManager";
 import { clearOrder } from "../../../utils/redux/slice/orderSlice";
 
 const PayButtonOrder = () => {

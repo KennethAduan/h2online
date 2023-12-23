@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import { GetItemsInventoryFirebase } from "../services";
+import { GetItemsInventoryFirebase } from "../services/inventoryManager";
 const FetchItemInventory = (status: string) => {
   const [item, setItem] = useState<any>([]);
 
