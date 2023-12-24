@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
-import { calculateValueFromPercentage } from "../../firebase/services/utilities";
-import { UpdateMaxStocks, PartialStockUpdate } from "../../firebase/services/inventoryManager";
-import PartialButton from "../partials/PartialButton";
+import { UpdateMaxStocks } from "../../firebase/services/inventoryManager";
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Typography,
-  Avatar,
-  Button,
   Progress,
 } from "@material-tailwind/react";
 import Swal from "sweetalert2";
@@ -26,6 +22,9 @@ interface ItemCardProps {
   maxStock: number;
   itemId: string;
 }
+import React from 'react';
+import { ReStockModal } from "../Modal/ReStockModal";
+
 
 function ItemCard({
   name = "Demo",
@@ -46,6 +45,10 @@ function ItemCard({
       card2Ref.current.style.height = `${card1Size.height}px`;
     }
   }, []);
+  
+  const calculateValueFromPercentage = (percentage:any, total:any) => {
+    return (percentage / 100) * total;
+  };
 
   const handleColor = (newStock: any) => {
     const medStock = calculateValueFromPercentage(50, maxStock) || 0;
@@ -98,25 +101,33 @@ function ItemCard({
   };
 
   const StockProgressBar = ({ stock, maxStock }: { stock: number, maxStock: number }) => {
-    let color;
-    const percentage = (stock / maxStock) * 100;
+    const medStock = calculateValueFromPercentage(50, maxStock) || 0;
+    const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
   
-    if (percentage >= 75) {
-      color = 'green';
-    } else if (percentage >= 25) {
-      color = 'yellow';
-    } else {
-      color = 'red';
+    let color = "green";
+  
+    if (stock <= lowStock) {
+      // Check for low stock first
+      color = "red";
+    } else if (stock <= medStock) {
+      // Then check for medium stock
+      color = "yellow";
     }
   
     return (
-      <Progress color={color} value={percentage} />
+      <Progress color={color} value={(stock / maxStock) * 100} />
     );
-  };
+    }
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
 
   return (
     <>
-      <div className="relative mx-12 my-32 h-96 w-96">
+    
+      <div onClick={handleOpen} className="relative mx-12 my-32 h-96 w-96">
         {/* <!-- Red Card (Back Card) --> */}
         <div className="absolute flex items-center justify-center w-full h-full right-3">
           <Card
@@ -224,40 +235,12 @@ function ItemCard({
             placeholder={undefined}
             className="flex items-center justify-between pt-0"
           >
-            {/* <div className="flex items-center -space-x-3">
-              <Avatar
-                placeholder={undefined}
-                size="sm"
-                variant="circular"
-                className={`border-2 border-white ${handleColor(stock)}`}
-              />
-            </div>
-            <div className="flex items-center justify-center">
-              <Typography placeholder={undefined} className="font-normal">
-                Re-Stock:{" "}
-              </Typography>
-              <Button
-                className="ml-2 "
-                placeholder={undefined}
-                size="sm"
-                variant="outlined"
-                onClick={() => handleAllBtn(itemId, maxStock)}
-              >
-                All
-              </Button>
-              <PartialButton
-                itemId={itemId}
-                handlePartialBtn={PartialStockUpdate}
-                stock={stock}
-                maxStock={maxStock}
-                className="ml-2 disabled"
-              ></PartialButton>
-             
-            </div> */}
               {stock > 0 ? <StockProgressBar stock={stock} maxStock={maxStock} /> : <p>Out of stock</p>}
           </CardFooter>
         </Card>
       </div>
+     
+     <ReStockModal itemId={itemId} stock={stock} maxStock={maxStock} handleClose={handleClose} open={open} handleAllBtn={handleAllBtn} />
     </>
   );
 }
