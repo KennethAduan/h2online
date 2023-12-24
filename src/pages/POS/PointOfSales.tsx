@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DrawerAndNavLayout } from "../../layout";
 import { Breadcrumbs } from "@material-tailwind/react";
-import { LayoutCard, ProductCard } from "../../components";
+import { LayoutCard, ProductCard, RecentOrderModal } from "../../components";
 import FetchRefillProduct from "../../firebase/hooks/FetchRefillProduct";
 import FetchPurchaseProduct from "../../firebase/hooks/FetchPurchaseProduct";
 import OrderTable from "./OrderTable/OrderTable";
+import PayButtonOrder from "./PayButton/PayButtonOrder";
+import ClearOrders from "./ClearOrder/ClearOrders";
 import { addItem } from "../../utils/redux/slice/orderSlice";
 import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
-import PayButtonOrder from "./PayButton/PayButtonOrder";
+
 import { formatPeso } from "../../utils/Helpers";
 import { v4 as uuidv4 } from "uuid";
 import RefundButton from "./RefundButton/RefundButton";
@@ -56,11 +58,16 @@ const PointOfSales = () => {
 
   return (
     <DrawerAndNavLayout>
-      <Breadcrumbs className="mb-4 bg-black " placeholder={undefined}>
-        <p className="font-bold text-white md:text-xl sm:text-lg lg:text-lg">
-          POINT OF SALES
-        </p>
-      </Breadcrumbs>
+      <div className="flex justify-between">
+        <Breadcrumbs className="mb-4 bg-black " placeholder={undefined}>
+          <p className="font-bold text-white md:text-xl sm:text-lg lg:text-lg">
+            POINT OF SALES
+          </p>
+        </Breadcrumbs>
+        <div>
+          <RecentOrderModal />
+        </div>
+      </div>
       <div className="grid grid-cols-2 ">
         <div className="w-4/5">
           {/* For Refill */}
@@ -105,8 +112,8 @@ const PointOfSales = () => {
         <div>
           <LayoutCard title="Order Summary">
             <OrderTable />
-
-            <div className="flex justify-end mt-32 text-2xl font-bold text-AccentFontColor">
+            <div className="flex justify-between mt-32 text-2xl font-bold text-AccentFontColor">
+              <ClearOrders />
               Total: {formatPeso(totalAmount)}
             </div>
           </LayoutCard>

@@ -22,9 +22,8 @@ interface ItemCardProps {
   maxStock: number;
   itemId: string;
 }
-import React from 'react';
+import React from "react";
 import { ReStockModal } from "../Modal/ReStockModal";
-
 
 function ItemCard({
   name = "Demo",
@@ -45,8 +44,8 @@ function ItemCard({
       card2Ref.current.style.height = `${card1Size.height}px`;
     }
   }, []);
-  
-  const calculateValueFromPercentage = (percentage:any, total:any) => {
+
+  const calculateValueFromPercentage = (percentage: any, total: any) => {
     return (percentage / 100) * total;
   };
 
@@ -100,33 +99,45 @@ function ItemCard({
     }
   };
 
-  const StockProgressBar = ({ stock, maxStock }: { stock: number, maxStock: number }) => {
+  const StockProgressBar = ({
+    stock,
+    maxStock,
+  }: {
+    stock: number;
+    maxStock: number;
+  }) => {
     const medStock = calculateValueFromPercentage(50, maxStock) || 0;
     const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
-  
-    let color = "green";
-  
+    enum colors {
+      GREEN = "green",
+      RED = "red",
+      YELLOW = "yellow",
+    }
+
+    let color = colors.GREEN;
+
     if (stock <= lowStock) {
       // Check for low stock first
-      color = "red";
+      color = colors.RED;
     } else if (stock <= medStock) {
       // Then check for medium stock
-      color = "yellow";
+      color = colors.YELLOW;
     }
-  
     return (
-      <Progress color={color} value={(stock / maxStock) * 100} />
+      <Progress
+        color={color}
+        value={(stock / maxStock) * 100}
+        placeholder={undefined}
+      />
     );
-    }
+  };
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <>
-    
       <div onClick={handleOpen} className="relative mx-12 my-32 h-96 w-96">
         {/* <!-- Red Card (Back Card) --> */}
         <div className="absolute flex items-center justify-center w-full h-full right-3">
@@ -235,12 +246,23 @@ function ItemCard({
             placeholder={undefined}
             className="flex items-center justify-between pt-0"
           >
-              {stock > 0 ? <StockProgressBar stock={stock} maxStock={maxStock} /> : <p>Out of stock</p>}
+            {stock > 0 ? (
+              <StockProgressBar stock={stock} maxStock={maxStock} />
+            ) : (
+              <p>Out of stock</p>
+            )}
           </CardFooter>
         </Card>
       </div>
-     
-     <ReStockModal itemId={itemId} stock={stock} maxStock={maxStock} handleClose={handleClose} open={open} handleAllBtn={handleAllBtn} />
+
+      <ReStockModal
+        itemId={itemId}
+        stock={stock}
+        maxStock={maxStock}
+        handleClose={handleClose}
+        open={open}
+        handleAllBtn={handleAllBtn}
+      />
     </>
   );
 }

@@ -6,7 +6,10 @@ interface LayoutCardProps {
 
 const LayoutCard: React.FC<LayoutCardProps> = ({ title, children }) => {
   return (
-    <Card className="w-auto mt-6" placeholder={undefined}>
+    <Card
+      className="w-auto mt-6 hover:bg-gray-100 hover:shadow-md"
+      placeholder={undefined}
+    >
       <CardBody placeholder={undefined}>
         <h1 className="text-2xl font-bold text-AccentFontColor">{title}</h1>
         <hr />

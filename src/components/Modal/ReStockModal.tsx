@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Checkbox } from "@material-tailwind/react";
 import { Box, FormControlLabel } from "@mui/material";
-import '../../App.css';
+import "../../App.css";
 import Modal from "@mui/material/Modal";
-import { PartialStockUpdate, UpdateMaxStocks } from "../../firebase/services/inventoryManager";
+import {
+  PartialStockUpdate,
+  UpdateMaxStocks,
+} from "../../firebase/services/inventoryManager";
 import { useState } from "react";
 import { toast } from "react-toastify";
 export const ReStockModal = ({
@@ -20,7 +24,7 @@ export const ReStockModal = ({
   handleAllBtn: (itemId: string, maxStock: number) => void;
 }) => {
   const style = {
-    position: "absolute" as "absolute",
+    position: "absolute" as const,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
@@ -39,13 +43,13 @@ export const ReStockModal = ({
 
   const handleChange = (e: any) => {
     const value = e.target.value;
-    setCount(value === "" ? "" : Number(value));// Don't change this line of code
+    setCount(value === "" ? 0 : Number(value));
   };
 
-  const handleCheckboxChange = (event:any) => {
+  const handleCheckboxChange = (event: any) => {
     setIsChecked(event.target.checked);
   };
- 
+
   const updateMaxStocks = async (itemId: string, maxStock: number) => {
     try {
       const maxStockUpdateResult = await UpdateMaxStocks(itemId, maxStock);
@@ -61,17 +65,28 @@ export const ReStockModal = ({
       toast.error(error.message);
     }
   };
-  
-  const updateStocks = async (itemId: string, count: number, isChecked: boolean, stocks: number) => {
+
+  const updateStocks = async (
+    itemId: string,
+    count: number,
+    isChecked: boolean,
+    stocks: number
+  ) => {
     try {
-      const partialStockUpdateResult = await PartialStockUpdate(itemId, Number(count));
+      const partialStockUpdateResult = await PartialStockUpdate(
+        itemId,
+        Number(count)
+      );
       console.log("partialStockUpdateResult", partialStockUpdateResult);
-      if (partialStockUpdateResult !== undefined && partialStockUpdateResult !== null) {
+      if (
+        partialStockUpdateResult !== undefined &&
+        partialStockUpdateResult !== null
+      ) {
         setCount(0);
       } else {
         console.log("Update failed or no changes made");
       }
-  
+
       if (isChecked && stocks !== maxStock) {
         await updateMaxStocks(itemId, maxStock);
       }
@@ -90,7 +105,7 @@ export const ReStockModal = ({
     >
       <Box sx={style}>
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <div className="flex-col items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <div className="flex-col items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
               Re-stock
             </h3>
@@ -101,7 +116,7 @@ export const ReStockModal = ({
                   id="decrement-button"
                   onClick={decrement}
                   data-input-counter-decrement="quantity-input"
-                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                  className="p-3 bg-gray-100 border border-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 rounded-s-lg h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
                 >
                   <svg
                     className="w-3 h-3 text-gray-900 dark:text-white"
@@ -136,7 +151,7 @@ export const ReStockModal = ({
                   onClick={increment}
                   data-input-counter-increment="quantity-input"
                   disabled={stock === maxStock || isChecked}
-                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                  className="p-3 bg-gray-100 border border-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 rounded-e-lg h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
                 >
                   <svg
                     className="w-3 h-3 text-gray-900 dark:text-white"
@@ -154,28 +169,26 @@ export const ReStockModal = ({
                     />
                   </svg>
                 </button>
-               
               </div>
               <FormControlLabel
-                 control={
-                  <Checkbox 
+                control={
+                  <Checkbox
                     checked={isChecked}
                     disabled={stock === maxStock}
                     onChange={handleCheckboxChange}
-                    crossOrigin={undefined} 
+                    crossOrigin={undefined}
                   />
                 }
                 defaultChecked
                 label="Re-Stock All"
-                />
-                <div>
-                </div>
+              />
+              <div></div>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end items-center mt-6 space-x-2 rtl:space-x-reverse">
-        <button
+        <div className="flex items-center justify-end mt-6 space-x-2 rtl:space-x-reverse">
+          <button
             onClick={handleClose}
             data-modal-hide="progress-modal"
             type="button"

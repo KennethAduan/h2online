@@ -5,15 +5,11 @@ import { AddPurchaseOrderFirebase } from "../../../firebase/services/orderManage
 import { clearOrder } from "../../../utils/redux/slice/orderSlice";
 
 const PayButtonOrder = () => {
-  // Redux Items
-
   const items = useAppSelector((state) => state.order.items);
   const { totalAmount } = useAppSelector((state) => state.order);
-  // const { isSuccessOrder } = useAppSelector((state) => state.user);
+
   const itemNumber = items.length;
   const dispatch = useAppDispatch();
-  // console.log(isSuccessOrder);
-  //   console.log("Items:", items);
 
   const handleAddPurchaseOrder = async () => {
     const result = await AddPurchaseOrderFirebase(
