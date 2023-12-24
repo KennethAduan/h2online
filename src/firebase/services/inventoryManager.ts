@@ -47,12 +47,12 @@ import {
   
     if (snapshot.empty) {
       console.log("No matching documents.");
-      return;
+      return false;
     }
   
     snapshot.docs.forEach(async (doc) => {
       await updateDoc(doc.ref, { stocks: maxStock, status: "Full Stock" });
-      toast.success("Successfully updated the maximum stock!");
+      return true;
     });
   };
 
@@ -101,7 +101,7 @@ import {
   ) => {
     const doc = await getInventoryDoc(itemCode);
     if (!doc) return;
-  
+    
     const data = doc.data();
     const currentStock = Number(data.stocks) || 0; 
     const newStock = currentStock - Number(quantity); 
@@ -123,7 +123,7 @@ import {
   
   export const PartialStockUpdate = async (itemCode: string, count: number) => {
     const doc = await getInventoryDoc(itemCode);
-    if (!doc) return;
+    if (!doc) return false;
   
     const data = doc.data();
     const currentStock = Number(data.stocks) || 0; 
@@ -131,13 +131,16 @@ import {
     const maxStock = await getMaxStocks(itemCode); 
   
     if (newStock === maxStock) {
-      toast.success("Stocks are now full!");
+      toast.info("Stocks are now full!");
+      return false;
     }
     if (newStock > maxStock) {
       toast.error("Stocks cannot be more than the maximum stock");
-      return;
+      return false;
     }
   
     const status = updateStatus(newStock, maxStock);
     await updateDoc(doc.ref, { stocks: newStock, status: status }); 
+    if(count !== 0) toast.success("Stocks are now updated!");
+    return true;
   };
