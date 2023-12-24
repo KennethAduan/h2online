@@ -7,6 +7,8 @@ interface Item {
   unitPrice: number;
   subPrice: number;
   serviceType: string;
+  unitPricePurchase: number;
+  priceTaxPurchase: number;
 }
 
 interface OrderSummaryState {
