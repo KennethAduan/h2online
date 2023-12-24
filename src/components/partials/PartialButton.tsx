@@ -23,7 +23,8 @@ export default function PartialButton({
   };
   const handleChange = (e: any) => {
     const value = e.target.value;
-    setCount(value === "" ? "" : Number(value));// Don't change this line of code
+    // binago ko na nag error sa deployment tangina
+    setCount(value === "" ? 0 : Number(value));
   };
   return (
     <div className="relative inline-block">
