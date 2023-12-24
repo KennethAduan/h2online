@@ -31,9 +31,9 @@ const OrderTable = () => {
   const items = useAppSelector((state) => state.order.items);
   const dispatch = useAppDispatch();
   return (
-    <div className="md:w-32 lg:w-auto">
+    <div>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650, width: "100%" }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "#1976D2" }}>
             {/* Changed color to blue */}
             <TableRow>
@@ -50,9 +50,12 @@ const OrderTable = () => {
               </TableCell>
               {/* Changed alignment to center */}
               <TableCell align="center" style={tableCellHeadStyle}>
-                Sub Price
+                Sub Total
               </TableCell>
               {/* Changed alignment to center */}
+              <TableCell align="center" style={tableCellHeadStyle}>
+                Total Price
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -67,7 +70,7 @@ const OrderTable = () => {
                   align="center"
                   style={tableCellRowStyle}
                 >
-                  <div className="flex justify-center space-x-4">
+                  <div className="grid grid-cols-2">
                     <button onClick={() => dispatch(removeItem(row.name))}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -85,20 +88,20 @@ const OrderTable = () => {
                         />
                       </svg>
                     </button>
-                    <p className="mt-2"> {row.name}</p>
+                    <p className="mt-2 ml-[-60px]"> {row.name}</p>
                   </div>
                 </TableCell>
                 <TableCell align="center" style={tableCellRowStyle}>
-                  <div className="space-x-4">
+                  <div className="grid items-center grid-cols-3 gap-2">
                     <button
-                      className="px-2 py-1 mr-4 text-white rounded-full bg-PrimaryBackGround"
+                      className="flex items-center justify-center w-8 h-8 border-2 rounded-full text-primary border-SecondaryBackGround" // Adjusted classes for a circular button
                       onClick={() => dispatch(decreaseQuantity(row.id))}
                     >
                       -
                     </button>
-                    {row.quantity}
+                    <div>{row.quantity}</div>
                     <button
-                      className="px-2 py-1 text-white rounded-full bg-PrimaryBackGround"
+                      className="flex items-center justify-center w-8 h-8 border-2 rounded-full text-primary border-SecondaryBackGround" // Adjusted classes for a circular button
                       onClick={() => dispatch(increaseQuantity(row.id))}
                     >
                       +
@@ -106,7 +109,10 @@ const OrderTable = () => {
                   </div>
                 </TableCell>
                 <TableCell align="center" style={tableCellRowStyle}>
-                  {formatPeso(row.unitPrice)}
+                  {formatPeso(row.unitPricePurchase)}
+                </TableCell>
+                <TableCell align="center" style={tableCellRowStyle}>
+                  {formatPeso(row.priceTaxPurchase)}
                 </TableCell>
                 <TableCell align="center" style={tableCellRowStyle}>
                   {formatPeso(row.subPrice)}

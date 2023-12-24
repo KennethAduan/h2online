@@ -15,21 +15,13 @@ import {
   monthlySalesIcon,
 } from "../../components/Icons";
 import { COLORS } from "../../themes";
-import GetAverageSales from "../../firebase/hooks/GetAverageSales";
-import { useState } from "react";
-import GetMonthlySales from "../../firebase/hooks/GetMonthlySales";
+import SalesHooksCard from "./hooks";
+
 const Sales = () => {
-  const [averageState, setAverage] = useState(0);
-  const [monthlySales, setMonthlySales] = useState(0);
-  GetAverageSales().then((average) => {
-    // console.log(`Today's average sales is: ₱${average.toFixed(2)}`);
-    setAverage(average);
-  });
-  GetMonthlySales().then((totalSales) => {
-    // console.log(`Total sales for the current month: ${totalSales}`);
-    setMonthlySales(totalSales);
-    // You can further process the totalSales, send it in a response, etc.
-  });
+  // Card
+  const { averageState, monthlySales, revenue } = SalesHooksCard();
+  // Sales data
+  const rows = FetchPurchaseOrder();
   const columns: GridColDef[] = [
     { field: "id", headerName: "Order ID", width: 250 },
     {
@@ -69,8 +61,6 @@ const Sales = () => {
     },
   ];
 
-  const rows = FetchPurchaseOrder();
-
   // console.log(rows);
   return (
     <DrawerAndNavLayout>
@@ -90,7 +80,11 @@ const Sales = () => {
           totalSales={monthlySales}
           icon={monthlySalesIcon}
         />
-        <SalesCard titleSales="Revenue" totalSales={5000} icon={revenueIcon} />
+        <SalesCard
+          titleSales="Revenue"
+          totalSales={revenue}
+          icon={revenueIcon}
+        />
       </div>
       {/* Data Table */}
       <div
@@ -102,7 +96,25 @@ const Sales = () => {
         <DataGrid
           rows={rows}
           columns={columns}
-          sx={{ borderWidth: 1, borderColor: COLORS.primary }}
+          sx={{
+            borderWidth: 1,
+            borderColor: COLORS.primary,
+            "& .MuiDataGrid-columnHeaderTitle": {
+              // More specific selector for the title text
+              fontWeight: "bold", // Make the font bold
+              color: COLORS.primary,
+              fontSize: "1rem",
+            },
+            "& .MuiDataGrid-columnHeader": {
+              textAlign: "center",
+              backgroundColor: "transparent", // Optional: Adjust if you want to change the header background
+            },
+            "& .MuiDataGrid-cell": {
+              color: "black",
+              fontSize: "1rem",
+              textAlign: "center",
+            },
+          }}
           getRowId={(row) => row.id}
           // disableRowSelectionOnClick
           slots={{ toolbar: GridToolbar }}

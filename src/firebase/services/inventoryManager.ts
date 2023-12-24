@@ -1,43 +1,43 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    collection,
-    getDocs,
-    query,
-    where,
-    updateDoc,
-    onSnapshot,
-  } from "firebase/firestore";
-  import { toast } from "react-toastify";
-  import { db } from "../config";
-  import {  getMaxStocks, updateStatus } from "./utilities";
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  onSnapshot,
+} from "firebase/firestore";
+import { toast } from "react-toastify";
+import { db } from "../config";
+import { getMaxStocks, updateStatus } from "./utilities";
 
+export const GetItemsInventoryFirebase = (status: string) => {
+  // Reference to the 'inventory' collection in the database
+  let inventoryRef: any = collection(db, "inventory");
+  console.debug("InventoryRef:", inventoryRef); // Debug: Check the initial reference to 'inventory' collection
 
-  export const GetItemsInventoryFirebase = (status: string) => {
-    // Reference to the 'inventory' collection in the database
-    let inventoryRef: any = collection(db, "inventory");
-    console.debug("InventoryRef:", inventoryRef); // Debug: Check the initial reference to 'inventory' collection
-  
-    // Conditionally modify the query based on the status
-    if (status !== "All") {
-      inventoryRef = query(inventoryRef, where("status", "==", status));
-      console.debug("Modified InventoryRef:", inventoryRef); // Debug: Check the modified query reference
-    }
-  
-    // Set up a snapshot listener on the inventoryRef
-    const unsubscribe = onSnapshot(inventoryRef, (snapshot: any) => {
-      // Mapping through the documents in the snapshot to get their data
-      const inventoryData = snapshot.docs.map((doc: any) => doc.data());
-      console.debug("Inventory Data:", inventoryData); // Debug: Check the fetched inventory data
-  
-      // Optionally, you can log or handle the individual documents
-      snapshot.docs.forEach((doc: any) => {
-        console.debug("Document data:", doc.data()); // Debug: Check each document's data
-      });
+  // Conditionally modify the query based on the status
+  if (status !== "All") {
+    inventoryRef = query(inventoryRef, where("status", "==", status));
+    console.debug("Modified InventoryRef:", inventoryRef); // Debug: Check the modified query reference
+  }
+
+  // Set up a snapshot listener on the inventoryRef
+  const unsubscribe = onSnapshot(inventoryRef, (snapshot: any) => {
+    // Mapping through the documents in the snapshot to get their data
+    const inventoryData = snapshot.docs.map((doc: any) => doc.data());
+    console.debug("Inventory Data:", inventoryData); // Debug: Check the fetched inventory data
+
+    // Optionally, you can log or handle the individual documents
+    snapshot.docs.forEach((doc: any) => {
+      console.debug("Document data:", doc.data()); // Debug: Check each document's data
     });
-    console.debug("Unsubscribe Function:", unsubscribe); // Debug: Check the unsubscribe function
-  
-    // Return the unsubscribe function to stop listening for updates
-    return unsubscribe;
-  };
+  });
+  console.debug("Unsubscribe Function:", unsubscribe); // Debug: Check the unsubscribe function
+
+  // Return the unsubscribe function to stop listening for updates
+  return unsubscribe;
+};
 
   export const UpdateMaxStocks = async (itemCode: string, maxStock: number) => {
     const inventoryRef = collection(db, "inventory");
@@ -57,30 +57,29 @@ import {
   };
 
 
-  export const GetRefillProductFirebase = async () => {
-    let userRef: any = collection(db, "inventory");
-  
-    userRef = query(userRef, where("refillType", "==", true));
-  
-    const querySnapshot = await getDocs(userRef);
-  
-    const refillData = querySnapshot.docs.map((doc) => doc.data());
-  
-    return refillData;
-  };
+export const GetRefillProductFirebase = async () => {
+  let userRef: any = collection(db, "inventory");
 
-  
-  export const GetPurchaseProductFirebase = async () => {
-    let userRef: any = collection(db, "inventory");
-  
-    userRef = query(userRef, where("purchaseType", "==", true));
-  
-    const querySnapshot = await getDocs(userRef);
-  
-    const purchaseData = querySnapshot.docs.map((doc) => doc.data());
-  
-    return purchaseData;
-  };
+  userRef = query(userRef, where("refillType", "==", true));
+
+  const querySnapshot = await getDocs(userRef);
+
+  const refillData = querySnapshot.docs.map((doc) => doc.data());
+
+  return refillData;
+};
+
+export const GetPurchaseProductFirebase = async () => {
+  let userRef: any = collection(db, "inventory");
+
+  userRef = query(userRef, where("purchaseType", "==", true));
+
+  const querySnapshot = await getDocs(userRef);
+
+  const purchaseData = querySnapshot.docs.map((doc) => doc.data());
+
+  return purchaseData;
+};
 
   const getInventoryDoc = async (itemCode: string) => {
     const inventoryRef = collection(db, "inventory");

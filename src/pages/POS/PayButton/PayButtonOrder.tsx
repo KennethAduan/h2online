@@ -74,7 +74,7 @@ const PayButtonOrder = () => {
         size="large"
         sx={{ width: 300 }}
       >
-        PAY
+        Pay
       </Button>
     </div>
   );

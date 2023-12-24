@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import PayButtonOrder from "./PayButton/PayButtonOrder";
 import { formatPeso } from "../../utils/Helpers";
 import { v4 as uuidv4 } from "uuid";
-
+import RefundButton from "./RefundButton/RefundButton";
 const PointOfSales = () => {
   const RefillProducts = FetchRefillProduct();
   const PurchaseProducts = FetchPurchaseProduct();
@@ -28,9 +28,11 @@ const PointOfSales = () => {
         serviceType: "Refill",
         name: product.item,
         itemCode: product.itemCode,
-        quantity: 1, // You might want to adjust this
+        priceTaxPurchase: 0,
+        unitPricePurchase: product.refillPrice,
+        quantity: 1,
         unitPrice: product.refillPrice,
-        subPrice: product.refillPrice, // Assuming the product object has a refillPrice property
+        subPrice: product.refillPrice,
       })
     );
   };
@@ -43,9 +45,11 @@ const PointOfSales = () => {
         serviceType: "Purchase",
         name: product.item,
         itemCode: product.itemCode,
-        quantity: 1, // You might want to adjust this
-        unitPrice: product.purchasePrice, // Assuming the product object has a purchasePrice property
-        subPrice: product.purchasePrice, // Assuming the product object has a purchasePrice property
+        quantity: 1,
+        unitPrice: product.purchasePrice,
+        subPrice: product.purchasePrice,
+        unitPricePurchase: product.unitPricePurchase,
+        priceTaxPurchase: product.priceTaxPurchase,
       })
     );
   };
@@ -57,7 +61,7 @@ const PointOfSales = () => {
           POINT OF SALES
         </p>
       </Breadcrumbs>
-      <div className="grid grid-cols-2 gap-4 space-x-4">
+      <div className="grid grid-cols-2 ">
         <div className="w-4/5">
           {/* For Refill */}
           <LayoutCard title="For refill">
@@ -106,7 +110,8 @@ const PointOfSales = () => {
               Total: {formatPeso(totalAmount)}
             </div>
           </LayoutCard>
-          <div className="flex justify-end my-12">
+          <div className="flex justify-between my-12">
+            <RefundButton />
             <PayButtonOrder />
           </div>
         </div>
