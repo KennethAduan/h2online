@@ -6,11 +6,10 @@ import {
   MenuItem,
   Avatar,
   Typography,
-  Badge,
 } from "@material-tailwind/react";
 import FetchNotification from "../../../firebase/hooks/FetchNotification";
-import { useState } from "react";
-import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { IconButton, Badge } from "@mui/material";
 import moment from "moment";
 function ClockIcon() {
   return (
@@ -29,17 +28,24 @@ function ClockIcon() {
   );
 }
 const NotificationButton = () => {
-  const notificationData = FetchNotification();
-  // const notificationNumber = notificationData.length;
-  const [badgeVisible, setBadgeVisible] = useState(true);
-  // Determine whether to show the badge
-  const showBadge = badgeVisible && notificationData.length > 0;
+  const { data: notificationData, markAsRead } = FetchNotification();
+  const navigate = useNavigate();
+  // Badge count is the number of unread notifications
+  const unreadCount = notificationData.filter(
+    (notif: any) => !notif.read
+  ).length;
+
+  const handleNotificationClick = async (id: string, location: string) => {
+    await markAsRead(id);
+    navigate(`/${location}`);
+  };
+
   // console.log(notificationData);
   return (
-    <Badge content={notificationData.length} invisible={!showBadge}>
+    <Badge badgeContent={unreadCount} color="secondary">
       <Menu placement="left-end">
         <MenuHandler>
-          <IconButton onClick={() => setBadgeVisible(false)}>
+          <IconButton>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -65,47 +71,46 @@ const NotificationButton = () => {
             </h1>
             <hr className="border-gray-300 mborder-t-2" />
           </div>
-          {notificationData.map((data: any, index: any) => {
-            return (
-              <MenuItem
-                className="flex items-center gap-4 py-2 pl-2 pr-8"
+          {notificationData.map((data: any, index: any) => (
+            <MenuItem
+              placeholder={undefined}
+              onClick={() => handleNotificationClick(data.id, data.navigate)}
+              className="flex items-center gap-4 py-2 pl-2 pr-8"
+              key={data.id || index}
+            >
+              <Avatar
                 placeholder={undefined}
-                key={index}
-              >
-                <Avatar
+                variant="circular"
+                alt="Notification Icon"
+                src="/h2o-logo.png"
+              />
+              <div className="flex flex-col gap-1">
+                <Typography
                   placeholder={undefined}
-                  variant="circular"
-                  alt="tania andrew"
-                  src="/h2o-logo.png"
-                />
-                <div className="flex flex-col gap-1">
-                  <Typography
-                    variant="small"
-                    color="black"
-                    className="font-semibold"
-                    placeholder={undefined}
-                  >
-                    {data.title}
-                  </Typography>
-                  <Typography
-                    variant="small"
-                    color="gray"
-                    className="font-semibold"
-                    placeholder={undefined}
-                  >
-                    {data.message}
-                  </Typography>
-                  <Typography
-                    className="flex items-center gap-1 text-sm font-medium text-blue-gray-500"
-                    placeholder={undefined}
-                  >
-                    <ClockIcon />
-                    {moment(data.date.toDate()).fromNow()}
-                  </Typography>
-                </div>
-              </MenuItem>
-            );
-          })}
+                  variant="small"
+                  color="black"
+                  className="font-semibold"
+                >
+                  {data.title}
+                </Typography>
+                <Typography
+                  placeholder={undefined}
+                  variant="small"
+                  color="gray"
+                  className="font-semibold"
+                >
+                  {data.message}
+                </Typography>
+                <Typography
+                  placeholder={undefined}
+                  className="flex items-center gap-1 text-sm font-medium text-blue-gray-500"
+                >
+                  <ClockIcon />
+                  {moment(data.date.toDate()).fromNow()}
+                </Typography>
+              </div>
+            </MenuItem>
+          ))}
         </MenuList>
       </Menu>
     </Badge>
