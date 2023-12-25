@@ -122,7 +122,8 @@ export const SubtractQuantityStocks = async (
     await updateDoc(doc.ref, { stocks: newStock, status: status }); 
     return true;
   };
-  
+}
+
   export const PartialStockUpdate = async (itemCode: string, count: number) => {
     const doc = await getInventoryDoc(itemCode);
     if (!doc) return false;
