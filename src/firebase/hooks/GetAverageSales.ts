@@ -14,9 +14,10 @@ today.setHours(0, 0, 0, 0); // Set to the start of the day
 const tomorrow = new Date(today);
 tomorrow.setDate(tomorrow.getDate() + 1); // Set to the start of the next day
 
+const saleRef = collection(db, "purchaseOrders");
 // Create a query to get all sales for today
 const salesQuery = query(
-  collection(db, "purchaseOrders"),
+  saleRef,
   where("date", ">=", Timestamp.fromDate(today)),
   where("date", "<", Timestamp.fromDate(tomorrow)) // Less than the start of tomorrow
 );

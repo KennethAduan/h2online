@@ -11,24 +11,27 @@ const ProductCard = ({
   productName,
   productPrice,
 }: ProductCardProps) => {
+  // console.log("Produc Render");
   return (
-    <Card className="w-48 shadow-lg" placeholder={undefined}>
-      <CardBody className="text-center" placeholder={undefined}>
-        <img
-          src={imageUrl}
-          className="rounded-lg w-44 h-44"
-          alt="profile-picture"
-        />
-        <div className="mt-4">
-          <h1 className="text-sm font-bold text-left text-AccentFontColor">
-            {productName}
-          </h1>
-          <h1 className="text-sm font-bold text-left text-AccentFontColor">
-            {formatPeso(productPrice)}
-          </h1>
-        </div>
-      </CardBody>
-    </Card>
+    <>
+      <Card className="w-48 shadow-lg" placeholder={undefined}>
+        <CardBody className="text-center" placeholder={undefined}>
+          <img
+            src={imageUrl}
+            className="rounded-lg w-44 h-44"
+            alt="profile-picture"
+          />
+          <div className="mt-4">
+            <h1 className="text-sm font-bold text-left text-AccentFontColor">
+              {productName}
+            </h1>
+            <h1 className="text-sm font-bold text-left text-AccentFontColor">
+              {formatPeso(productPrice)}
+            </h1>
+          </div>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 

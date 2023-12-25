@@ -8,7 +8,7 @@ const ClearOrders = () => {
     dispatch(clearOrder());
   };
   return (
-    <div>
+    <>
       <Button
         fullWidth
         variant="contained"
@@ -18,7 +18,7 @@ const ClearOrders = () => {
       >
         Clear
       </Button>
-    </div>
+    </>
   );
 };
 

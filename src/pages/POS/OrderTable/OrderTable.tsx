@@ -31,7 +31,7 @@ const OrderTable = () => {
   const items = useAppSelector((state) => state.order.items);
   const dispatch = useAppDispatch();
   return (
-    <div>
+    <>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650, width: "100%" }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "#1976D2" }}>
@@ -122,7 +122,7 @@ const OrderTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </>
   );
 };
 

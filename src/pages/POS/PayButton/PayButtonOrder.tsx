@@ -46,7 +46,7 @@ const PayButtonOrder = () => {
         console.log("Is Success: " + isSuccess);
         // Need dito ma fix yung stocks
         if (isSuccess) {
-          console.log("Success");
+          // console.log("Success");
           Swal.fire({
             title: "Success",
             text: "Payment has been made",
@@ -55,7 +55,7 @@ const PayButtonOrder = () => {
           dispatch(clearOrder());
           setLoading(false);
         } else {
-          console.log("Failed");
+          // console.log("Failed");
           setLoading(false);
           Swal.fire({
             title: "Error",
@@ -69,7 +69,7 @@ const PayButtonOrder = () => {
     });
   };
   return (
-    <div>
+    <>
       <Button
         variant="contained"
         onClick={handlePay}
@@ -80,7 +80,7 @@ const PayButtonOrder = () => {
         Pay
       </Button>
       <LoadingScreen loading={loading} />
-    </div>
+    </>
   );
 };
 
