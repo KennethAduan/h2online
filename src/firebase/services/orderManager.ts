@@ -45,7 +45,7 @@ import { SubtractQuantityStocks } from './inventoryManager';
       const itemCode = item.itemCode;
       const quantity = item.quantity;
       const itemName = item.name;
-      console.log("Item Name: " + itemName);
+      console.log("Item Name from order: " + itemName);
       result =
         (await SubtractQuantityStocks(itemName, itemCode, quantity)) || false;
         (await SubtractQuantityStocks("Big Cap Seal", "BigCapSeal123", quantity)) || false;

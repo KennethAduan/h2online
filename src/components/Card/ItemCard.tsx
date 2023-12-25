@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
+import AvTimerIcon from "@mui/icons-material/AvTimer";
 import { UpdateMaxStocks } from "../../firebase/services/inventoryManager";
 import {
   Card,
@@ -23,7 +24,7 @@ interface ItemCardProps {
   itemId: string;
 }
 import React from "react";
-import { ReStockModal } from "../Modal/ReStockModal";
+import { ReStockModal, CountdownTimer } from "../../components/index";
 
 function ItemCard({
   name = "Demo",
@@ -135,7 +136,7 @@ function ItemCard({
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  console.log("itemId", itemId);
   return (
     <>
       <div onClick={handleOpen} className="relative mx-12 my-32 h-96 w-96">
@@ -241,11 +242,34 @@ function ItemCard({
                 {status || "Not Available"}
               </Typography>
             </div>
+
+            {(itemId === "Membrane123" ||
+              itemId === "SedimentFilter123" ||
+              itemId === "FilterSet123" ||
+              itemId === "SolarSalt123") && (
+              <div className="flex justify-between items-center mt-2">
+                <AvTimerIcon fontSize="large" className="w-full" />
+                <CountdownTimer
+                  monthDuration={itemId === "SedimentFilter123" || itemId === "FilterSet123" || itemId === "SolarSalt123" ? true : false}
+                  yearDuration={true}
+                  monthCount={itemId === "SedimentFilter123" || itemId === "FilterSet123" ? 1 : 2}
+                  yearCount={1}
+                />
+              </div>
+            )}
           </CardBody>
           <CardFooter
             placeholder={undefined}
             className="flex items-center justify-between pt-0"
           >
+            <Typography
+              placeholder={undefined}
+              color="blue-gray"
+              className="font-medium mr-2"
+              variant="h6"
+            >
+              Status:
+            </Typography>
             {stock > 0 ? (
               <StockProgressBar stock={stock} maxStock={maxStock} />
             ) : (

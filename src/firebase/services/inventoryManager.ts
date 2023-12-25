@@ -123,21 +123,17 @@ export const GetPurchaseProductFirebase = async () => {
   export const PartialStockUpdate = async (itemCode: string, count: number) => {
     const doc = await getInventoryDoc(itemCode);
     if (!doc) return false;
-  
+
     const data = doc.data();
     const currentStock = Number(data.stocks) || 0; 
-    const newStock = currentStock + Number(count); 
+    const newStock = Math.max(currentStock + Number(count), 0); // Ensure newStock is not negative
     const maxStock = await getMaxStocks(itemCode); 
-  
-    if (newStock === maxStock) {
-      toast.info("Stocks are now full!");
-      return false;
-    }
+    
     if (newStock > maxStock) {
       toast.error("Stocks cannot be more than the maximum stock");
       return false;
     }
-  
+
     const status = updateStatus(newStock, maxStock);
     await updateDoc(doc.ref, { stocks: newStock, status: status }); 
     if(count !== 0) toast.success("Stocks are now updated!");
