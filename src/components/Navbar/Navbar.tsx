@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import NotificationButton from "./Notification/NotificationButton";
 import { COLORS } from "../../themes";
+import ProfileModal from "../Modal/ProfileModal";
 export default function Navbar() {
   const AppBar = styled(
     MuiAppBar,
@@ -26,9 +27,12 @@ export default function Navbar() {
           </div> */}
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 5, my: 2 }}>
-            <div>
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 2, my: 2 }}>
+            <div className="mr-8">
               <NotificationButton />
+            </div>
+            <div>
+              <ProfileModal />
             </div>
           </Box>
         </Toolbar>

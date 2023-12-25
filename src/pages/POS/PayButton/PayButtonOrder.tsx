@@ -3,11 +3,12 @@ import Swal from "sweetalert2";
 import { useAppSelector, useAppDispatch } from "../../../utils/redux/hooks";
 import { AddPurchaseOrderFirebase } from "../../../firebase/services/orderManager";
 import { clearOrder } from "../../../utils/redux/slice/orderSlice";
-
+import { LoadingScreen } from "../../../components";
+import { useState } from "react";
 const PayButtonOrder = () => {
   const items = useAppSelector((state) => state.order.items);
   const { totalAmount } = useAppSelector((state) => state.order);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const itemNumber = items.length;
   const dispatch = useAppDispatch();
 
@@ -30,6 +31,7 @@ const PayButtonOrder = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Confirm",
     }).then(async (result) => {
+      setLoading(true);
       if (result.isConfirmed) {
         if (items.length === 0) {
           Swal.fire({
@@ -37,6 +39,7 @@ const PayButtonOrder = () => {
             text: "Please add orders to your account",
             icon: "error",
           });
+          setLoading(false);
           return;
         }
         const isSuccess = await handleAddPurchaseOrder();
@@ -50,14 +53,18 @@ const PayButtonOrder = () => {
             icon: "success",
           });
           dispatch(clearOrder());
+          setLoading(false);
         } else {
           console.log("Failed");
+          setLoading(false);
           Swal.fire({
             title: "Error",
             text: "Payment has not been made",
             icon: "error",
           });
         }
+      } else {
+        setLoading(false);
       }
     });
   };
@@ -72,6 +79,7 @@ const PayButtonOrder = () => {
       >
         Pay
       </Button>
+      <LoadingScreen loading={loading} />
     </div>
   );
 };

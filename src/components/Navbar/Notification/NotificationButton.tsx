@@ -4,13 +4,13 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
-  IconButton,
   Avatar,
   Typography,
   Badge,
 } from "@material-tailwind/react";
 import FetchNotification from "../../../firebase/hooks/FetchNotification";
 import { useState } from "react";
+import { IconButton } from "@mui/material";
 import moment from "moment";
 function ClockIcon() {
   return (
@@ -39,7 +39,7 @@ const NotificationButton = () => {
     <Badge content={notificationData.length} invisible={!showBadge}>
       <Menu placement="left-end">
         <MenuHandler>
-          <IconButton variant="text" placeholder={undefined}>
+          <IconButton onClick={() => setBadgeVisible(false)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -68,7 +68,6 @@ const NotificationButton = () => {
           {notificationData.map((data: any, index: any) => {
             return (
               <MenuItem
-                onClick={() => setBadgeVisible(false)}
                 className="flex items-center gap-4 py-2 pl-2 pr-8"
                 placeholder={undefined}
                 key={index}

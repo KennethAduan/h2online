@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import ModalComponent from "../../../components/Modal/ModalComponent";
-import { DeleteItemPurchaseOrderById} from "../../../firebase/services/orderManager";
+import { ModalComponent, LoadingScreen } from "../../../components";
+import { DeleteItemPurchaseOrderById } from "../../../firebase/services/orderManager";
 import Swal from "sweetalert2";
+
 const Icon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +34,9 @@ const style = {
 };
 
 const DeleteItemOrder = (id: any) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -44,6 +47,7 @@ const DeleteItemOrder = (id: any) => {
 
   const ConfirmDelete = async () => {
     try {
+      setLoading(true);
       await DeleteItemPurchaseOrderById(id.id);
       await handleCancel();
       await Swal.fire({
@@ -53,7 +57,9 @@ const DeleteItemOrder = (id: any) => {
         showConfirmButton: false,
         timer: 1500,
       });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
       Swal.fire({
         position: "center",
@@ -65,40 +71,43 @@ const DeleteItemOrder = (id: any) => {
     }
   };
   return (
-    <div>
-      <ModalComponent
-        buttonName={"Delete"}
-        icon={Icon}
-        variant={"text"}
-        customStyle={style}
-        isOpen={isModalOpen}
-        onClose={handleCancel}
-        onOpen={handleOpenModal}
-        color={"red"}
-      >
-        <div>
-          <h1 className="md:text-lg lg:text-xl">
-            Are you sure you want to delete this item?
-          </h1>
-          <h1 className="md:text-lg lg:text-xl">Item ID: {id.id}</h1>
-        </div>
-        {/* Button */}
-        <div className="flex justify-center mt-4 space-x-12">
-          <button
-            className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700"
-            onClick={ConfirmDelete}
-          >
-            Confirm
-          </button>
-        </div>
-      </ModalComponent>
-    </div>
+    <>
+      <div>
+        <ModalComponent
+          buttonName={"Delete"}
+          icon={Icon}
+          variant={"text"}
+          customStyle={style}
+          isOpen={isModalOpen}
+          onClose={handleCancel}
+          onOpen={handleOpenModal}
+          color={"red"}
+        >
+          <div>
+            <h1 className="md:text-lg lg:text-xl">
+              Are you sure you want to delete this item?
+            </h1>
+            <h1 className="md:text-lg lg:text-xl">Item ID: {id.id}</h1>
+          </div>
+          {/* Button */}
+          <div className="flex justify-center mt-4 space-x-12">
+            <button
+              className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+            <button
+              className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700"
+              onClick={ConfirmDelete}
+            >
+              Confirm
+            </button>
+          </div>
+        </ModalComponent>
+      </div>
+      <LoadingScreen loading={loading} />
+    </>
   );
 };
 

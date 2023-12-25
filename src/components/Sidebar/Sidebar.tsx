@@ -117,7 +117,7 @@ export default function Sidebar() {
           {navItems.map(({ text, icon: Icon, path }) => (
             <ListItem
               disablePadding
-              sx={{ display: "block" }}
+              sx={{ display: "block", mt: 2 }}
               key={text}
               onClick={() => navigate(path)}
             >

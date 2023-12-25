@@ -2,8 +2,11 @@ import { Button } from "@mui/material";
 import Swal from "sweetalert2";
 import { DeleteItemPurchaseOrderById } from "../../../firebase/services/orderManager";
 import GetLatestOrderDoc from "../../../firebase/hooks/GetLatestOrderDoc";
+import { LoadingScreen } from "../../../components";
+import { useState } from "react";
 const RefundButton = () => {
   const orderId = GetLatestOrderDoc();
+  const [loading, setLoading] = useState<boolean>(false);
   const handleRefund = () => {
     Swal.fire({
       title: "Are you sure refund?",
@@ -14,6 +17,7 @@ const RefundButton = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Confirm",
     }).then(async (result) => {
+      setLoading(true);
       if (result.isConfirmed) {
         if (orderId) {
           await DeleteItemPurchaseOrderById(orderId);
@@ -25,6 +29,9 @@ const RefundButton = () => {
         } else {
           console.error("No order ID to delete");
         }
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     });
   };
@@ -40,6 +47,7 @@ const RefundButton = () => {
       >
         REFUND
       </Button>
+      <LoadingScreen loading={loading} />
     </div>
   );
 };
