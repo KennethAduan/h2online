@@ -23,7 +23,7 @@ const CheckAverageSales = () => {
 
     const timerEnd = setTimeout(() => {
       GetAverageSales().then((average) => {
-        if (average >= 2000) {
+        if (average >= 2750) {
           console.log("Target met or exceeded!");
         } else {
           AddNotificationsToFirebase(message, title);

@@ -14,24 +14,29 @@ import {
 } from "../../../utils/redux/slice/orderSlice";
 import { formatPeso } from "../../../utils/Helpers";
 import { COLORS } from "../../../themes";
-
-const tableCellHeadStyle = {
-  fontWeight: "bold",
-  color: "white",
-  backgroundColor: COLORS.primary,
-  fontSize: 20,
-};
-
-const tableCellRowStyle = {
-  fontWeight: "bold",
-  fontSize: 18,
-};
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const OrderTable = () => {
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const items = useAppSelector((state) => state.order.items);
   const dispatch = useAppDispatch();
+
+  // Define styles conditionally based on screen size
+  const tableCellHeadStyle = {
+    fontWeight: "bold",
+    color: "white",
+    backgroundColor: COLORS.primary,
+    fontSize: isMediumScreen ? "0.75rem" : "1rem", // Smaller on medium and smaller screens
+  };
+
+  const tableCellRowStyle = {
+    fontWeight: "bold",
+    fontSize: isMediumScreen ? "0.75rem" : "0.875rem", // Smaller on medium and smaller screens
+  };
   return (
-    <div>
+    <>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650, width: "100%" }} aria-label="simple table">
           <TableHead sx={{ backgroundColor: "#1976D2" }}>
@@ -79,7 +84,7 @@ const OrderTable = () => {
                         strokeWidth={1.5}
                         stroke="currentColor"
                         color="red"
-                        className="w-6 h-6 mt-2 "
+                        className="mt-2 lg:w-6 lg:h-6 md:w-4 md:h-4"
                       >
                         <path
                           strokeLinecap="round"
@@ -88,7 +93,7 @@ const OrderTable = () => {
                         />
                       </svg>
                     </button>
-                    <p className="mt-2 ml-[-60px]"> {row.name}</p>
+                    <p className="  mt-2 md:ml-[-30px] "> {row.name}</p>
                   </div>
                 </TableCell>
                 <TableCell align="center" style={tableCellRowStyle}>
@@ -122,7 +127,7 @@ const OrderTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </>
   );
 };
 

@@ -6,8 +6,8 @@ import {
   getDocs,
   query,
   where,
-//   updateDoc,
-//   onSnapshot,
+  //   updateDoc,
+  //   onSnapshot,
   Timestamp,
   addDoc,
   // doc,
@@ -15,7 +15,7 @@ import {
   //   setDoc,
 } from "firebase/firestore";
 import { generateRandomId } from "./utilities";
-import { SubtractQuantityStocks } from './inventoryManager';
+import { SubtractQuantityStocks } from "./inventoryManager";
 
   export const AddPurchaseOrderFirebase = async (
     items: any[],
@@ -56,60 +56,58 @@ import { SubtractQuantityStocks } from './inventoryManager';
     return result;
   };
 
-  export const GetOrderItemsByOrderNumber = async (orderNumber: string) => {
-    const ordersCollection = collection(db, "purchaseOrders");
-    // console.log(`Searching for order with orderNumber: ${orderNumber}`);
-  
-    // Create a query to find the order by orderNumber
-    const orderQuery = query(ordersCollection, where("id", "==", orderNumber));
-  
-    try {
-      // Execute the query
-      const orderSnapshot = await getDocs(orderQuery);
-  
-      // Check if the order with the specified orderNumber exists
-      if (orderSnapshot.size > 0) {
-        const orderDoc = orderSnapshot.docs[0];
+export const GetOrderItemsByOrderNumber = async (orderNumber: string) => {
+  const ordersCollection = collection(db, "purchaseOrders");
+  // console.log(`Searching for order with orderNumber: ${orderNumber}`);
+
+  // Create a query to find the order by orderNumber
+  const orderQuery = query(ordersCollection, where("id", "==", orderNumber));
+
+  try {
+    // Execute the query
+    const orderSnapshot = await getDocs(orderQuery);
+
+    // Check if the order with the specified orderNumber exists
+    if (orderSnapshot.size > 0) {
+      const orderDoc = orderSnapshot.docs[0];
+      // console.log(
+      //   `Found order document with ID: ${orderDoc.id} and data:`,
+      //   orderDoc.data()
+      // );
+
+      const orderItemsCollectionRef = collection(orderDoc.ref, "purchaseItems");
+      // console.log(
+      //   `Fetching documents from ordersItems subcollection of order document with ID: ${orderDoc.id}`
+      // );
+
+      const orderItemsSnapshot = await getDocs(orderItemsCollectionRef);
+
+      if (orderItemsSnapshot.size > 0) {
+        const orderItemsData = orderItemsSnapshot.docs.map((doc) => doc.data());
         // console.log(
-        //   `Found order document with ID: ${orderDoc.id} and data:`,
-        //   orderDoc.data()
+        //   `Found ${orderItemsSnapshot.size} documents in ordersItems subcollection:`,
+        //   orderItemsData
         // );
-  
-        const orderItemsCollectionRef = collection(orderDoc.ref, "purchaseItems");
-        // console.log(
-        //   `Fetching documents from ordersItems subcollection of order document with ID: ${orderDoc.id}`
-        // );
-  
-        const orderItemsSnapshot = await getDocs(orderItemsCollectionRef);
-  
-        if (orderItemsSnapshot.size > 0) {
-          const orderItemsData = orderItemsSnapshot.docs.map((doc) => doc.data());
-          // console.log(
-          //   `Found ${orderItemsSnapshot.size} documents in ordersItems subcollection:`,
-          //   orderItemsData
-          // );
-          return orderItemsData;
-        } else {
-          // console.log("OrderItems collection is empty.");
-          return [];
-        }
+        return orderItemsData;
       } else {
-        // console.log("Order not found.");
+        // console.log("OrderItems collection is empty.");
         return [];
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } else {
+      // console.log("Order not found.");
+      return [];
     }
-  };
-
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 
 export const DeleteItemPurchaseOrderById = async (id: string) => {
-    const ordersCollection = collection(db, "purchaseOrders");
-    const orderQuery = query(ordersCollection, where("id", "==", id));
-  
-    const querySnapshot = await getDocs(orderQuery);
-    querySnapshot.forEach((doc) => {
-      deleteDoc(doc.ref);
-    });
-  };
-  
+  const ordersCollection = collection(db, "purchaseOrders");
+  const orderQuery = query(ordersCollection, where("id", "==", id));
+
+  const querySnapshot = await getDocs(orderQuery);
+  querySnapshot.forEach((doc) => {
+    deleteDoc(doc.ref);
+  });
+};

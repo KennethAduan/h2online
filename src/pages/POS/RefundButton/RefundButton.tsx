@@ -37,7 +37,7 @@ const RefundButton = () => {
   };
 
   return (
-    <div>
+    <>
       <Button
         onClick={handleRefund}
         variant="outlined"
@@ -48,7 +48,7 @@ const RefundButton = () => {
         REFUND
       </Button>
       <LoadingScreen loading={loading} />
-    </div>
+    </>
   );
 };
 

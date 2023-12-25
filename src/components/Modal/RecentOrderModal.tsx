@@ -44,7 +44,7 @@ const RecentOrderModal = () => {
               <h1 className="text-xl">{latestOrderId}</h1>
             </div>
           ) : (
-            <p>Loading latest order ID...</p>
+            <p className="text-center">Loading latest order ID...</p>
           )}
           {/* Add cancel button and Copy Id button */}
           <div className="flex justify-around mt-8">

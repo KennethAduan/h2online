@@ -13,9 +13,11 @@ import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
 import { formatPeso } from "../../utils/Helpers";
 import { v4 as uuidv4 } from "uuid";
 import RefundButton from "./RefundButton/RefundButton";
+
 const PointOfSales = () => {
   const RefillProducts = FetchRefillProduct();
   const PurchaseProducts = FetchPurchaseProduct();
+  // console.log("RefillProducts", RefillProducts);
   const dispatch = useAppDispatch();
   const { totalAmount } = useAppSelector((state) => state.order);
 
@@ -118,8 +120,12 @@ const PointOfSales = () => {
             </div>
           </LayoutCard>
           <div className="flex justify-between my-12">
-            <RefundButton />
-            <PayButtonOrder />
+            <div>
+              <RefundButton />
+            </div>
+            <div>
+              <PayButtonOrder />
+            </div>
           </div>
         </div>
       </div>
