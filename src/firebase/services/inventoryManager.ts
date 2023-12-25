@@ -98,7 +98,7 @@ export const SubtractQuantityStocks = async (
   itemName: string,
   itemCode: string,
   quantity: number,
-  itemType: string
+  itemType?: string
 ) => {
   const doc = await getInventoryDoc(itemCode);
   if (!doc) return;
@@ -119,27 +119,29 @@ export const SubtractQuantityStocks = async (
   if (itemType === "Purchase") {
     const maxStock = await getMaxStocks(itemCode);
     const status = updateStatus(newStock, maxStock);
-    await updateDoc(doc.ref, { stocks: newStock, status: status }); 
+    await updateDoc(doc.ref, { stocks: newStock, status: status });
     return true;
-  };
-}
-
-  export const PartialStockUpdate = async (itemCode: string, count: number) => {
-    const doc = await getInventoryDoc(itemCode);
-    if (!doc) return false;
-
-    const data = doc.data();
-    const currentStock = Number(data.stocks) || 0; 
-    const newStock = Math.max(currentStock + Number(count), 0); // Ensure newStock is not negative
-    const maxStock = await getMaxStocks(itemCode); 
-    
-    if (newStock > maxStock) {
-      toast.error("Stocks cannot be more than the maximum stock");
-      return false;
-    }
-
-    const status = updateStatus(newStock, maxStock);
-    await updateDoc(doc.ref, { stocks: newStock, status: status }); 
-    if(count !== 0) toast.success("Stocks are now updated!");
+  } else {
     return true;
-  };
+  }
+};
+
+export const PartialStockUpdate = async (itemCode: string, count: number) => {
+  const doc = await getInventoryDoc(itemCode);
+  if (!doc) return false;
+
+  const data = doc.data();
+  const currentStock = Number(data.stocks) || 0;
+  const newStock = Math.max(currentStock + Number(count), 0); // Ensure newStock is not negative
+  const maxStock = await getMaxStocks(itemCode);
+
+  if (newStock > maxStock) {
+    toast.error("Stocks cannot be more than the maximum stock");
+    return false;
+  }
+
+  const status = updateStatus(newStock, maxStock);
+  await updateDoc(doc.ref, { stocks: newStock, status: status });
+  if (count !== 0) toast.success("Stocks are now updated!");
+  return true;
+};
