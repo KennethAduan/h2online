@@ -25,7 +25,7 @@ export const AddPurchaseOrderFirebase = async (
   const purchaseOrderRef = collection(db, "purchaseOrders");
   const id = generateRandomId();
   // Create a new purchase order document
-
+  // console.log("Items: ", items);
   const orderDocRef = await addDoc(purchaseOrderRef, {
     id: id,
     date: Timestamp.now(),
@@ -45,11 +45,18 @@ export const AddPurchaseOrderFirebase = async (
     const itemCode = item.itemCode;
     const quantity = item.quantity;
     const itemName = item.name;
-    // console.log("Item Name: " + itemName);
+    const itemType = item.serviceType;
+    // console.log("Item Type: " + itemType);
+
     result =
-      (await SubtractQuantityStocks(itemName, itemCode, quantity)) || false;
-    (await SubtractQuantityStocks("Big Cap Seal", "BigCapSeal123", quantity)) ||
+      (await SubtractQuantityStocks(itemName, itemCode, quantity, itemType)) ||
       false;
+    (await SubtractQuantityStocks(
+      "Big Cap Seal",
+      "BigCapSeal123",
+      quantity,
+      itemType
+    )) || false;
     if (!result) {
       break;
     }
