@@ -17,8 +17,8 @@ export const ReStockModal = ({
   open,
 }: {
   itemId: string;
-  stock: number;
-  maxStock: number;
+  stock: number | undefined;
+  maxStock: number | undefined;
   handleClose: () => void;
   open: boolean;
   handleAllBtn: (itemId: string, maxStock: number) => void;
@@ -50,7 +50,10 @@ export const ReStockModal = ({
     setIsChecked(event.target.checked);
   };
 
-  const updateMaxStocks = async (itemId: string, maxStock: number) => {
+  const updateMaxStocks = async (
+    itemId: string,
+    maxStock: number | undefined
+  ) => {
     try {
       const maxStockUpdateResult = await UpdateMaxStocks(itemId, maxStock);
       console.log("maxStockUpdateResult", maxStockUpdateResult);
@@ -70,7 +73,7 @@ export const ReStockModal = ({
     itemId: string,
     count: number,
     isChecked: boolean,
-    stocks: number
+    stocks: number | undefined
   ) => {
     try {
       const partialStockUpdateResult = await PartialStockUpdate(

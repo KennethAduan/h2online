@@ -6,8 +6,17 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
 
-const CountdownTimer = ({monthDuration, yearDuration, monthCount, yearCount}: {monthDuration: boolean, yearDuration: boolean, monthCount: number, yearCount: number}) => {
-
+const CountdownTimer = ({
+  monthDuration,
+  yearDuration,
+  monthCount,
+  yearCount,
+}: {
+  monthDuration: boolean;
+  yearDuration: boolean;
+  monthCount: number;
+  yearCount: number;
+}) => {
   const [remainingTime, setRemainingTime] = useState({
     years: 0,
     months: 0,
@@ -20,9 +29,9 @@ const CountdownTimer = ({monthDuration, yearDuration, monthCount, yearCount}: {m
   useEffect(() => {
     let dateTarget;
     if (monthDuration) {
-        dateTarget = dayjs().add(monthCount, 'month');
+      dateTarget = dayjs().add(monthCount, "month");
     } else if (yearDuration) {
-        dateTarget = dayjs().add(yearCount, 'year');
+      dateTarget = dayjs().add(yearCount, "year");
     }
     // "2024-12-31T23:59:59Z" format
     const futureDate = dayjs(dateTarget); // Replace this with your future date/time
@@ -47,24 +56,24 @@ const CountdownTimer = ({monthDuration, yearDuration, monthCount, yearCount}: {m
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [monthCount, monthDuration, yearCount, yearDuration]);
 
   return (
-    <div className="text-2xl flex w-3/4 text-center justify-around items-center">
+    <div className="flex items-center justify-around w-3/4 text-2xl text-center">
       <div>
-        <p className="text-cyan-600"> {remainingTime.years}</p>
+        <p className="text-SecondaryBackGround"> {remainingTime.years}</p>
         <p className="text-sm"> Year</p>
       </div>
       <div>
-        <p className="text-cyan-600"> :{remainingTime.months}</p>
+        <p className="text-SecondaryBackGround"> :{remainingTime.months}</p>
         <p className="text-sm"> Months</p>
       </div>
       <div>
-        <p className="text-cyan-600"> :{remainingTime.days}</p>
+        <p className="text-SecondaryBackGround"> :{remainingTime.days}</p>
         <p className="text-sm"> Days</p>
       </div>
       <div>
-        <p className="text-cyan-600"> :{remainingTime.seconds}</p>
+        <p className="text-SecondaryBackGround"> :{remainingTime.seconds}</p>
         <p className="text-sm"> Seconds</p>
       </div>
     </div>

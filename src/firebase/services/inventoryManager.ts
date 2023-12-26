@@ -39,7 +39,10 @@ export const GetItemsInventoryFirebase = (status: string) => {
   return unsubscribe;
 };
 
-export const UpdateMaxStocks = async (itemCode: string, maxStock: number) => {
+export const UpdateMaxStocks = async (
+  itemCode: string,
+  maxStock: number | undefined
+) => {
   const inventoryRef = collection(db, "inventory");
   const snapshot = await getDocs(
     query(inventoryRef, where("itemCode", "==", itemCode))

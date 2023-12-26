@@ -18,9 +18,9 @@ interface ItemCardProps {
   image: string;
   category?: string;
   color?: string;
-  status: string;
-  stock: number;
-  maxStock: number;
+  status?: string;
+  stock?: number;
+  maxStock?: number;
   itemId: string;
 }
 import React from "react";
@@ -104,8 +104,8 @@ function ItemCard({
     stock,
     maxStock,
   }: {
-    stock: number;
-    maxStock: number;
+    stock: number | undefined;
+    maxStock: number | undefined;
   }) => {
     const medStock = calculateValueFromPercentage(50, maxStock) || 0;
     const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
@@ -116,18 +116,19 @@ function ItemCard({
     }
 
     let color = colors.GREEN;
-
-    if (stock <= lowStock) {
-      // Check for low stock first
-      color = colors.RED;
-    } else if (stock <= medStock) {
-      // Then check for medium stock
-      color = colors.YELLOW;
+    if (stock !== undefined && maxStock !== undefined) {
+      if (stock <= lowStock) {
+        // Check for low stock first
+        color = colors.RED;
+      } else if (stock <= medStock) {
+        // Then check for medium stock
+        color = colors.YELLOW;
+      }
     }
     return (
       <Progress
         color={color}
-        value={(stock / maxStock) * 100}
+        value={stock && maxStock ? (stock / maxStock) * 100 : 0}
         placeholder={undefined}
       />
     );
@@ -136,7 +137,7 @@ function ItemCard({
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log("itemId", itemId);
+  // console.log("itemId", itemId);
   return (
     <>
       <div onClick={handleOpen} className="relative mx-12 my-32 h-96 w-96">
@@ -191,23 +192,25 @@ function ItemCard({
                 {name}
               </Typography>
             </div>
-            <div className="flex justify-between">
-              <Typography
-                placeholder={undefined}
-                color="blue-gray"
-                className="font-medium"
-                textGradient
-              >
-                Stock (max. {maxStock} pcs)
-              </Typography>
-              <Typography
-                placeholder={undefined}
-                className="font-black text-black"
-                textGradient
-              >
-                {stock}
-              </Typography>
-            </div>
+            {stock !== undefined && stock > 0 && (
+              <div className="flex justify-between">
+                <Typography
+                  placeholder={undefined}
+                  color="blue-gray"
+                  className="font-medium"
+                  textGradient
+                >
+                  Stock (max. {maxStock} pcs)
+                </Typography>
+                <Typography
+                  placeholder={undefined}
+                  className="font-black text-black"
+                  textGradient
+                >
+                  {stock}
+                </Typography>
+              </div>
+            )}
             <div className="flex justify-between">
               <Typography
                 placeholder={undefined}
@@ -225,34 +228,46 @@ function ItemCard({
                 {price}
               </Typography>
             </div>
-            <div className="flex justify-between">
-              <Typography
-                placeholder={undefined}
-                color="blue-gray"
-                className="font-medium"
-                textGradient
-              >
-                Status:
-              </Typography>
-              <Typography
-                placeholder={undefined}
-                className="font-black text-black"
-                textGradient
-              >
-                {status || "Not Available"}
-              </Typography>
-            </div>
+            {stock !== undefined && stock > 0 && (
+              <div className="flex justify-between">
+                <Typography
+                  placeholder={undefined}
+                  color="blue-gray"
+                  className="font-medium"
+                  textGradient
+                >
+                  Status:
+                </Typography>
+                <Typography
+                  placeholder={undefined}
+                  className="font-black text-black"
+                  textGradient
+                >
+                  {status || "Not Available"}
+                </Typography>
+              </div>
+            )}
 
             {(itemId === "Membrane123" ||
               itemId === "SedimentFilter123" ||
               itemId === "FilterSet123" ||
               itemId === "SolarSalt123") && (
-              <div className="flex justify-between items-center mt-2">
+              <div className="flex items-center justify-between mt-2">
                 <AvTimerIcon fontSize="large" className="w-full" />
                 <CountdownTimer
-                  monthDuration={itemId === "SedimentFilter123" || itemId === "FilterSet123" || itemId === "SolarSalt123" ? true : false}
+                  monthDuration={
+                    itemId === "SedimentFilter123" ||
+                    itemId === "FilterSet123" ||
+                    itemId === "SolarSalt123"
+                      ? true
+                      : false
+                  }
                   yearDuration={true}
-                  monthCount={itemId === "SedimentFilter123" || itemId === "FilterSet123" ? 1 : 2}
+                  monthCount={
+                    itemId === "SedimentFilter123" || itemId === "FilterSet123"
+                      ? 1
+                      : 2
+                  }
                   yearCount={1}
                 />
               </div>
@@ -265,15 +280,15 @@ function ItemCard({
             <Typography
               placeholder={undefined}
               color="blue-gray"
-              className="font-medium mr-2"
+              className="mr-2 font-medium"
               variant="h6"
             >
               Status:
             </Typography>
-            {stock > 0 ? (
+            {stock !== undefined && stock > 0 ? (
               <StockProgressBar stock={stock} maxStock={maxStock} />
             ) : (
-              <p>Out of stock</p>
+              <StockProgressBar stock={stock} maxStock={maxStock} />
             )}
           </CardFooter>
         </Card>

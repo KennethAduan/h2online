@@ -27,7 +27,7 @@ const Inventory = () => {
         <div className="grid lg:grid-cols-3 md:grid-cols-1 ">
           {/* Changed to grid */}
           {IventoryData.map((item: any, index: number) => {
-            console.log("item", item);
+            // console.log("item", item);
             return (
               <div key={index}>
                 <ItemCard
