@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "@mui/material";
-import Swal from "sweetalert2";
-import { GetOrderItemsByOrderNumber } from "../../../firebase/services/orderManager";
-import { LoadingScreen } from "../../../components";
+
+import { Box, Modal, TextField, Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import { RefundPurchaseOrderFirebase } from "../../../firebase/services/orderManager";
 import { toast } from "react-toastify";
-import { Box, Modal, TextField } from "@mui/material";
+import Swal from "sweetalert2";
+import {
+  GetOrderItemsByOrderNumber,
+  RefundPurchaseOrderFirebase,
+} from "@/firebase/services/orderManager";
+import { LoadingScreen } from "@/components";
 
 const style = {
   position: "absolute" as const,
@@ -57,6 +59,7 @@ const RefundButton = () => {
       setLoading(true);
       if (result.isConfirmed) {
         if (orderId) {
+          await setOrderId("");
           await RefundPurchaseOrderFirebase(orderData, orderId);
 
           setLoading(false);

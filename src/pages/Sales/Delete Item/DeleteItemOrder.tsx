@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { ModalComponent, LoadingScreen } from "../../../components";
-import { DeleteItemPurchaseOrderById } from "../../../firebase/services/orderManager";
+import { ModalComponent, LoadingScreen } from "@/components";
+import { DeleteItemPurchaseOrderById } from "@/firebase/services/orderManager";
 import Swal from "sweetalert2";
 
 const Icon = (

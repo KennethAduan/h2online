@@ -5,17 +5,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useAppSelector, useAppDispatch } from "../../../utils/redux/hooks";
-
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
 import {
   removeItem,
   increaseQuantity,
   decreaseQuantity,
-} from "../../../utils/redux/slice/orderSlice";
-import { formatPeso } from "../../../utils/Helpers";
-import { COLORS } from "../../../themes";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+} from "@/utils/redux/slice/orderSlice";
+
+import { formatPeso } from "@/utils/Helpers";
+import { COLORS } from "@/themes";
 
 const OrderTable = () => {
   const theme = useTheme();

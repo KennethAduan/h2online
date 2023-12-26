@@ -1,6 +1,6 @@
-import GetAverageSales from "../../../firebase/hooks/GetAverageSales";
-import GetMonthlySales from "../../../firebase/hooks/GetMonthlySales";
-import GetTotalRevenue from "../../../firebase/hooks/GetTotalRevenue";
+import GetAverageSales from "@/firebase/hooks/GetAverageSales";
+import GetMonthlySales from "@/firebase/hooks/GetMonthlySales";
+import GetTotalRevenue from "@/firebase/hooks/GetTotalRevenue";
 import { useState } from "react";
 const SalesHooksCard = () => {
   const [averageState, setAverage] = useState(0);

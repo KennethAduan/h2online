@@ -91,6 +91,8 @@ const getInventoryDoc = async (itemCode: string) => {
 
   if (snapshot.empty) {
     console.log("No matching documents.");
+    toast.error("No matching documents.");
+
     return null;
   }
 

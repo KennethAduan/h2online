@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DrawerAndNavLayout } from "../../layout";
+
 import { Breadcrumbs } from "@material-tailwind/react";
-import { LayoutCard, ProductCard, RecentOrderModal } from "../../components";
-import FetchRefillProduct from "../../firebase/hooks/FetchRefillProduct";
-import FetchPurchaseProduct from "../../firebase/hooks/FetchPurchaseProduct";
+import { v4 as uuidv4 } from "uuid";
+import { DrawerAndNavLayout } from "@/layout";
+
+import { LayoutCard, ProductCard, RecentOrderModal } from "@/components";
+import FetchRefillProduct from "@/firebase/hooks/FetchRefillProduct";
+import FetchPurchaseProduct from "@/firebase/hooks/FetchPurchaseProduct";
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { addItem } from "@/utils/redux/slice/orderSlice";
+
 import OrderTable from "./OrderTable/OrderTable";
 import PayButtonOrder from "./PayButton/PayButtonOrder";
 import ClearOrders from "./ClearOrder/ClearOrders";
-import { addItem } from "../../utils/redux/slice/orderSlice";
-import { useAppDispatch, useAppSelector } from "../../utils/redux/hooks";
-
-import { formatPeso } from "../../utils/Helpers";
-import { v4 as uuidv4 } from "uuid";
 import RefundButton from "./RefundButton/RefundButton";
+import { formatPeso } from "@/utils/Helpers";
 
 const PointOfSales = () => {
   const RefillProducts = FetchRefillProduct();

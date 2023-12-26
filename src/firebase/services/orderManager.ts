@@ -136,21 +136,29 @@ export const RefundPurchaseOrderFirebase = async (
   orderId: string
 ) => {
   try {
-    // console.log("Refunding Items", items);
-    for (const item of items) {
-      const itemCode = item.itemCode;
-      const quantity = item.quantity;
-      const itemType = item.serviceType;
-      // console.log("Item Name from order: " + itemName);
+    if (orderId) {
+      // console.log("Refunding Items", items);
+      for (const item of items) {
+        const itemCode = item.itemCode;
+        const quantity = item.quantity;
+        const itemType = item.serviceType;
+        // console.log("Item Name from order: " + itemName);
 
-      await AddQuantityStocks(itemCode, quantity, itemType);
-      await DeleteItemPurchaseOrderById(orderId);
+        await AddQuantityStocks(itemCode, quantity, itemType);
+        await DeleteItemPurchaseOrderById(orderId);
+      }
+      Swal.fire({
+        title: "Success",
+        text: "Refund has been made",
+        icon: "success",
+      });
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while refunding items",
+        icon: "error",
+      });
     }
-    Swal.fire({
-      title: "Success",
-      text: "Refund has been made",
-      icon: "success",
-    });
   } catch (error) {
     console.error("Error refunding items: ", error);
     Swal.fire({

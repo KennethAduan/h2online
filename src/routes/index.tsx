@@ -1,4 +1,4 @@
-import { Login, PointOfSales, Sales, Inventory, NotFoundPage } from "../pages";
+import { Login, PointOfSales, Sales, Inventory, NotFoundPage } from "@/pages";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 const MainRoutes = () => {
