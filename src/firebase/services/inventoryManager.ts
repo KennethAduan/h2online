@@ -148,3 +148,26 @@ export const PartialStockUpdate = async (itemCode: string, count: number) => {
   if (count !== 0) toast.success("Stocks are now updated!");
   return true;
 };
+
+// This is for refunding items
+export const AddQuantityStocks = async (
+  itemCode: string,
+  quantity: number,
+  itemType?: string
+) => {
+  const doc = await getInventoryDoc(itemCode);
+  if (!doc) return;
+
+  const data = doc.data();
+  const currentStock = Number(data.stocks) || 0;
+  const newStock = Number(quantity) + currentStock;
+
+  if (itemType === "Purchase") {
+    const maxStock = await getMaxStocks(itemCode);
+    const status = updateStatus(newStock, maxStock);
+    await updateDoc(doc.ref, { stocks: newStock, status: status });
+    return true;
+  } else {
+    return true;
+  }
+};

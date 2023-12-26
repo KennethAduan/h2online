@@ -47,8 +47,16 @@ const Login: React.FC = () => {
       const checkUserCredentials = await checkUserData(userName, password);
       if (!checkUserCredentials.empty) {
         const userData = checkUserCredentials.docs[0].data();
-        dispatch(UserInfoRedux({ ...userData }));
-        localStorage.setItem("userData", JSON.stringify(userData));
+        dispatch(
+          UserInfoRedux({
+            userFirstName: userData.firstName,
+            userLastName: userData.lastName,
+            userName: userData.username,
+            userId: userData.userId,
+            userPassword: userData.password,
+          })
+        );
+        localStorage.setItem("userData", JSON.stringify(checkUserCredentials));
         navigate("/pos");
       } else {
         Swal.fire("Oops...", "Invalid username or password", "error");

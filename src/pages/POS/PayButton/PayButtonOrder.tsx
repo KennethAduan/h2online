@@ -43,7 +43,7 @@ const PayButtonOrder = () => {
           return;
         }
         const isSuccess = await handleAddPurchaseOrder();
-        console.log("Is Success: " + isSuccess);
+        // console.log("Is Success: " + isSuccess);
         // Need dito ma fix yung stocks
         if (isSuccess) {
           // console.log("Success");

@@ -7,8 +7,6 @@ interface userState {
   userLastName: string;
   userPassword: string;
   isOpenNav: boolean;
-  isSuccessOrder: boolean;
-  averageSalesRedux: number;
 }
 
 const initialState: userState = {
@@ -18,8 +16,6 @@ const initialState: userState = {
   userLastName: "",
   userPassword: "",
   isOpenNav: false,
-  isSuccessOrder: true,
-  averageSalesRedux: 0,
 };
 
 const userSlice = createSlice({
