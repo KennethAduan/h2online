@@ -4,7 +4,8 @@ import PrivateRoutes from "./PrivateRoutes";
 const MainRoutes = () => {
   return (
     <Routes>
-      <Route element={<PrivateRoutes />}>
+      <Route path="/" element={<PrivateRoutes />}>
+        <Route index element={<Login />} />
         <Route element={<PointOfSales />} path="/pos" />
         <Route element={<Sales />} path="/sales" />
         <Route element={<Inventory />} path="/inventory" />
