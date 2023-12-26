@@ -3,7 +3,7 @@ import { Outlet, Navigate, useLocation } from "react-router-dom";
 const PrivateRoutes = () => {
   const location = useLocation();
   const userData = localStorage.getItem("userData");
-  console.log("Current userData:", userData);
+
   // Redirect to /pos if userData exists and the user is trying to access the root ("/")
   if (userData && location.pathname === "/") {
     return <Navigate to="pos" replace />;
