@@ -138,6 +138,7 @@ function ItemCard({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   // console.log("itemId", itemId);
+  
   return (
     <>
       <div onClick={handleOpen} className="relative mx-12 my-32 h-96 w-96">
