@@ -270,6 +270,7 @@ function ItemCard({
                       : 2
                   }
                   yearCount={1}
+                  itemCode={itemId}
                 />
               </div>
             )}
