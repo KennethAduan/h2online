@@ -4,6 +4,8 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import duration from "dayjs/plugin/duration";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import React from "react";
+import { SetStatusExpire } from "@/firebase/services/inventoryManager";
 
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
@@ -15,12 +17,19 @@ const CountdownTimer = ({
   yearDuration,
   monthCount,
   yearCount,
+  itemCode,
 }: {
   monthDuration: boolean;
   yearDuration: boolean;
   monthCount: number;
   yearCount: number;
+  itemCode: string;
 }) => {
+  const isTimerReset = () => {
+    const { years, months, days, hours, minutes, seconds } = remainingTime;
+    return years === 0 && months === 0 && days === 0 && hours === 0 && minutes === 0 && seconds === 0;
+  };
+  
   const [remainingTime, setRemainingTime] = useState({
     years: 0,
     months: 0,
@@ -33,24 +42,52 @@ const CountdownTimer = ({
   useEffect(() => {
     let dateTarget:any;
   
-    if (monthDuration) {
-      dateTarget = dayjs().add(monthCount, "month");
-    } else if (yearDuration) {
-      dateTarget = dayjs().add(yearCount, "year");
-    }
-  
+    // if (monthDuration) {
+    //   dateTarget = dayjs().add(monthCount, "month");
+    // } else if (yearDuration) {
+    //   dateTarget = dayjs().add(yearCount, "year");
+    // }
+    dateTarget = dayjs("2023-12-27T19:27:59").tz('Asia/Manila');
     const intervalId = setInterval(() => {
       const now = dayjs().tz('Asia/Manila');
       const futureDate = dateTarget;
   
       const diff = futureDate.diff(now);
+
+      if (diff <= 0) {
+        // Time is up, clear the interval
+        clearInterval(intervalId);
+        console.log("test 123");
+        
+        // Set remaining time to zero
+        setRemainingTime({
+          years: 0,
+          months: 0,
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        });
+
+        // Check if the timer is at 0
+        console.log('isTimerReset', isTimerReset());
+        console.log('itemCode', itemCode);
+        
+        if (isTimerReset() && itemCode === "Membrane123" || itemCode === "FilterSet123" || itemCode === "SedimentFilter123" || itemCode === "SolarSalt123") {
+          console.log('timer reset');
+          SetStatusExpire(itemCode, isTimerReset);
+        }
+
+        return;
+      }
+
       if (diff <= 604800000) { // 1 week in milliseconds
         console.log('1 week remaining');
       }
   
       const countdown = dayjs.duration(futureDate.diff(now));
   
-      if (countdown.months() <= 2 && countdown.years() === 0) {
+      if (itemCode === "Membrane123" && countdown.months() <= 2 && countdown.years() === 0) {
         console.log('2 months remaining');
       }
   
@@ -69,6 +106,12 @@ const CountdownTimer = ({
         minutes,
         seconds,
       });
+
+       // Check if the timer is at 0
+      if (isTimerReset() && (itemCode === "Membrane123" || itemCode === "FilterSet123" || itemCode === "SedimentFilter123" || itemCode === "SolarSalt123")) {
+        console.log('timer reset');
+        SetStatusExpire(itemCode, isTimerReset);
+      }
     }, 1000);
   
     return () => clearInterval(intervalId);
@@ -89,14 +132,14 @@ const CountdownTimer = ({
         <p className="text-SecondaryBackGround"> :{remainingTime.days}</p>
         <p className="text-sm"> Days</p>
       </div>
-      {/* <div>
+      <div>
         <p className="text-SecondaryBackGround"> :{remainingTime.hours}</p>
         <p className="text-sm"> Hours</p>
       </div>
       <div>
         <p className="text-SecondaryBackGround"> :{remainingTime.minutes}</p>
         <p className="text-sm"> Minutes</p>
-      </div> */}
+      </div>
       <div>
         <p className="text-SecondaryBackGround"> :{remainingTime.seconds}</p>
         <p className="text-sm"> Seconds</p>
