@@ -6,16 +6,13 @@ import {
   getDocs,
   query,
   where,
-  //   updateDoc,
-  //   onSnapshot,
   Timestamp,
   addDoc,
-  // doc,
   deleteDoc,
-  //   setDoc,
 } from "firebase/firestore";
 import { generateRandomId } from "./utilities";
-import { SubtractQuantityStocks } from "./inventoryManager";
+import { AddQuantityStocks, SubtractQuantityStocks } from "./inventoryManager";
+import Swal from "sweetalert2";
 
 export const AddPurchaseOrderFirebase = async (
   items: any[],
@@ -46,7 +43,7 @@ export const AddPurchaseOrderFirebase = async (
     const quantity = item.quantity;
     const itemName = item.name;
     const itemType = item.serviceType;
-    console.log("Item Name from order: " + itemName);
+    // console.log("Item Name from order: " + itemName);
     result =
       (await SubtractQuantityStocks(itemName, itemCode, quantity, itemType)) ||
       false;
@@ -110,11 +107,64 @@ export const GetOrderItemsByOrderNumber = async (orderNumber: string) => {
 };
 
 export const DeleteItemPurchaseOrderById = async (id: string) => {
-  const ordersCollection = collection(db, "purchaseOrders");
-  const orderQuery = query(ordersCollection, where("id", "==", id));
+  const ordersCollectionRef = collection(db, "purchaseOrders");
+  const orderQuery = query(ordersCollectionRef, where("id", "==", id));
 
   const querySnapshot = await getDocs(orderQuery);
-  querySnapshot.forEach((doc) => {
-    deleteDoc(doc.ref);
-  });
+  for (const docSnapshot of querySnapshot.docs) {
+    // Reference to the sub-collection
+    const purchaseItemsCollectionRef = collection(
+      docSnapshot.ref,
+      "purchaseItems"
+    );
+
+    // Fetch all documents in the sub-collection
+    const purchaseItemsSnapshot = await getDocs(purchaseItemsCollectionRef);
+    for (const itemDoc of purchaseItemsSnapshot.docs) {
+      // Delete each document in the sub-collection
+      await deleteDoc(itemDoc.ref);
+    }
+
+    // After all sub-collection documents are deleted, delete the parent document
+    await deleteDoc(docSnapshot.ref);
+  }
+};
+
+// This is for refunding Items
+export const RefundPurchaseOrderFirebase = async (
+  items: any[],
+  orderId: string
+) => {
+  try {
+    if (orderId) {
+      // console.log("Refunding Items", items);
+      for (const item of items) {
+        const itemCode = item.itemCode;
+        const quantity = item.quantity;
+        const itemType = item.serviceType;
+        // console.log("Item Name from order: " + itemName);
+
+        await AddQuantityStocks(itemCode, quantity, itemType);
+        await DeleteItemPurchaseOrderById(orderId);
+      }
+      Swal.fire({
+        title: "Success",
+        text: "Refund has been made",
+        icon: "success",
+      });
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while refunding items",
+        icon: "error",
+      });
+    }
+  } catch (error) {
+    console.error("Error refunding items: ", error);
+    Swal.fire({
+      title: "Error",
+      text: "An error occurred while refunding items",
+      icon: "error",
+    });
+  }
 };

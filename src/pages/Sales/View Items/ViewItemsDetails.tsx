@@ -7,10 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ModalComponent from "../../../components/Modal/ModalComponent";
-import { COLORS } from "../../../themes";
-import { formatPeso } from "../../../utils/Helpers";
-import { GetOrderItemsByOrderNumber } from "../../../firebase/services/orderManager";
+import ModalComponent from "@/components/Modal/ModalComponent";
+import { COLORS } from "@/themes";
+import { formatPeso } from "@/utils/Helpers";
+import { GetOrderItemsByOrderNumber } from "@/firebase/services/orderManager";
 const Icon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"

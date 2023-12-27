@@ -7,12 +7,12 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import Swal from "sweetalert2";
-import { useAppDispatch } from "../../utils/redux/hooks";
+import { useAppDispatch } from "@/utils/redux/hooks";
 import { useNavigate } from "react-router-dom";
-import { checkUserData } from "../../firebase/services/authManager";
+import { checkUserData } from "@/firebase/services/authManager";
 import { BiSolidUser } from "react-icons/bi";
 import { AiFillLock } from "react-icons/ai";
-import { UserInfoRedux } from "../../utils/redux/slice/userSlice";
+import { UserInfoRedux } from "@/utils/redux/slice/userSlice";
 
 type Credentials = {
   userName: string;
@@ -47,8 +47,16 @@ const Login: React.FC = () => {
       const checkUserCredentials = await checkUserData(userName, password);
       if (!checkUserCredentials.empty) {
         const userData = checkUserCredentials.docs[0].data();
-        dispatch(UserInfoRedux({ ...userData }));
-        localStorage.setItem("userData", JSON.stringify(userData));
+        dispatch(
+          UserInfoRedux({
+            userFirstName: userData.firstName,
+            userLastName: userData.lastName,
+            userName: userData.username,
+            userId: userData.userId,
+            userPassword: userData.password,
+          })
+        );
+        localStorage.setItem("userData", JSON.stringify(checkUserCredentials));
         navigate("/pos");
       } else {
         Swal.fire("Oops...", "Invalid username or password", "error");

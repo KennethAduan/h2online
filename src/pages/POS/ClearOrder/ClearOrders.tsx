@@ -1,5 +1,5 @@
-import { useAppDispatch } from "../../../utils/redux/hooks";
-import { clearOrder } from "../../../utils/redux/slice/orderSlice";
+import { clearOrder } from "@/utils/redux/slice/orderSlice";
+import { useAppDispatch } from "@/utils/redux/hooks";
 import { Button } from "@mui/material";
 
 const ClearOrders = () => {

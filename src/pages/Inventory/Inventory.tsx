@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DrawerAndNavLayout } from "../../layout";
+import { DrawerAndNavLayout } from "@/layout";
+
 import { Breadcrumbs } from "@material-tailwind/react";
 import { useState } from "react";
-import { StockStatusButtons, ItemCard } from "../../components";
-// import FetchItemInventory from "../../firebase/hooks/FetchItemInventory";
-import GetInventoryData from "../../firebase/hooks/GetItemStocks";
+import { StockStatusButtons, ItemCard } from "@/components";
+
+import GetInventoryData from "@/firebase/hooks/GetItemStocks";
 const Inventory = () => {
   const [selectedStockStatus, setSelectedStockStatus] = useState<string>("All"); // Default to "All" StockStatus
   const handleSelectedStockStatus = (StockStatus: string) => {

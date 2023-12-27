@@ -1,10 +1,12 @@
 import { Button } from "@mui/material";
 import Swal from "sweetalert2";
-import { useAppSelector, useAppDispatch } from "../../../utils/redux/hooks";
-import { AddPurchaseOrderFirebase } from "../../../firebase/services/orderManager";
-import { clearOrder } from "../../../utils/redux/slice/orderSlice";
-import { LoadingScreen } from "../../../components";
+
+import { useAppDispatch, useAppSelector } from "@/utils/redux/hooks";
+import { AddPurchaseOrderFirebase } from "@/firebase/services/orderManager";
+import { clearOrder } from "@/utils/redux/slice/orderSlice";
+import { LoadingScreen } from "@/components";
 import { useState } from "react";
+
 const PayButtonOrder = () => {
   const items = useAppSelector((state) => state.order.items);
   const { totalAmount } = useAppSelector((state) => state.order);
@@ -43,7 +45,7 @@ const PayButtonOrder = () => {
           return;
         }
         const isSuccess = await handleAddPurchaseOrder();
-        console.log("Is Success: " + isSuccess);
+        // console.log("Is Success: " + isSuccess);
         // Need dito ma fix yung stocks
         if (isSuccess) {
           // console.log("Success");

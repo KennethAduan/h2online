@@ -1,20 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DrawerAndNavLayout } from "../../layout";
-import { SalesCard } from "../../components";
+import { DrawerAndNavLayout } from "@/layout";
+import { SalesCard } from "@/components";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
-import { FetchPurchaseOrder } from "../../firebase/hooks/FetchPurchaseOrder";
-import { formatPeso } from "../../utils/Helpers";
+import { FetchPurchaseOrder } from "@/firebase/hooks/FetchPurchaseOrder";
+import { formatPeso } from "@/utils/Helpers";
 import moment from "moment";
 import firebase from "firebase/compat/app";
 import ViewItemsDetails from "./View Items/ViewItemsDetails";
 import DeleteItemOrder from "./Delete Item/DeleteItemOrder";
-import {
-  salesIcon,
-  revenueIcon,
-  monthlySalesIcon,
-} from "../../components/Icons";
-import { COLORS } from "../../themes";
+import { salesIcon, revenueIcon, monthlySalesIcon } from "@/components/Icons";
+import { COLORS } from "@/themes";
 import SalesHooksCard from "./hooks";
 
 const Sales = () => {

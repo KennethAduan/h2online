@@ -24,6 +24,21 @@ const RecentOrderModal = () => {
   const handleClose = () => setOpen(false);
   const latestOrderId = GetLatestOrderDoc();
 
+  const handleViewRecent = () => {
+    if (latestOrderId) {
+      navigator.clipboard.writeText(latestOrderId);
+      toast.success("ID SUCCESSFULLY COPIED ", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   return (
     <div>
       <Tooltip title="Recent Order" placement="bottom">
@@ -51,24 +66,7 @@ const RecentOrderModal = () => {
             <Button variant="contained" onClick={handleClose} color="error">
               CLose
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                if (latestOrderId) {
-                  navigator.clipboard.writeText(latestOrderId);
-                  toast.success("ID SUCCESSFULLY COPIED ", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                  });
-                }
-              }}
-            >
+            <Button variant="contained" onClick={handleViewRecent}>
               Copy ID
             </Button>
           </div>
