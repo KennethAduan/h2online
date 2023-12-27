@@ -173,3 +173,25 @@ export const AddQuantityStocks = async (
     return true;
   }
 };
+
+export const SetStatusExpire = async (
+  itemCode: string,
+  isTimerReset: () => boolean,
+) => {
+  const doc = await getInventoryDoc(itemCode);
+  if (!doc) return;
+
+  const data = doc.data();
+  console.log(data);
+  
+  const currentStock = Number(data.stocks) || 0;
+  const newStock = currentStock - 1 ;
+
+  const maxStock = await getMaxStocks(itemCode);
+  
+  // If the timer is at 0, set the status to 'expire'
+  const status = isTimerReset() ? 'expire' : updateStatus(newStock, maxStock);
+
+  await updateDoc(doc.ref, { stocks: newStock, status: status });
+  return true;
+};
