@@ -4,8 +4,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import duration from "dayjs/plugin/duration";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import React from "react";
-import { SetStatusExpire } from "@/firebase/services/inventoryManager";
+// import { SetStatusExpire } from "@/firebase/services/inventoryManager";
 
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
@@ -18,12 +17,14 @@ const CountdownTimer = ({
   monthCount,
   yearCount,
   itemCode,
+  resetFlag,
 }: {
   monthDuration: boolean;
   yearDuration: boolean;
   monthCount: number;
   yearCount: number;
   itemCode: string;
+  resetFlag: boolean;
 }) => {
   const isTimerReset = () => {
     const { years, months, days, hours, minutes, seconds } = remainingTime;
@@ -47,7 +48,8 @@ const CountdownTimer = ({
     // } else if (yearDuration) {
     //   dateTarget = dayjs().add(yearCount, "year");
     // }
-    dateTarget = dayjs("2023-12-27T19:27:59").tz('Asia/Manila');
+    dateTarget = dayjs().add(2, "minute");
+    // dateTarget = dayjs("2023-12-29T22:25:59").tz('Asia/Manila');
     const intervalId = setInterval(() => {
       const now = dayjs().tz('Asia/Manila');
       const futureDate = dateTarget;
@@ -73,10 +75,10 @@ const CountdownTimer = ({
         console.log('isTimerReset', isTimerReset());
         console.log('itemCode', itemCode);
         
-        if (isTimerReset() && itemCode === "Membrane123" || itemCode === "FilterSet123" || itemCode === "SedimentFilter123" || itemCode === "SolarSalt123") {
-          console.log('timer reset');
-          SetStatusExpire(itemCode, isTimerReset);
-        }
+        // if (isTimerReset() && itemCode === "Membrane123" || itemCode === "FilterSet123" || itemCode === "SedimentFilter123" || itemCode === "SolarSalt123") {
+        //   console.log('timer reset');
+        //   SetStatusExpire(itemCode, isTimerReset);
+        // }
 
         return;
       }
@@ -107,16 +109,18 @@ const CountdownTimer = ({
         seconds,
       });
 
-       // Check if the timer is at 0
-      if (isTimerReset() && (itemCode === "Membrane123" || itemCode === "FilterSet123" || itemCode === "SedimentFilter123" || itemCode === "SolarSalt123")) {
-        console.log('timer reset');
-        SetStatusExpire(itemCode, isTimerReset);
-      }
-    }, 1000);
+  
+    }, 100);
   
     return () => clearInterval(intervalId);
-  }, [monthCount, monthDuration, yearCount, yearDuration]);
+  }, [monthCount, monthDuration, yearCount, yearDuration, resetFlag]);
   
+  // useEffect(() => {
+  //   if (isTimerReset() && (itemCode === "Membrane123" || itemCode === "FilterSet123" || itemCode === "SedimentFilter123" || itemCode === "SolarSalt123")) {
+  //     console.log('timer reset');
+  //     SetStatusExpire(itemCode, isTimerReset);
+  //   }
+  // }, [remainingTime]);
 
   return (
     <div className="flex items-center justify-around w-3/4 text-2xl text-center">

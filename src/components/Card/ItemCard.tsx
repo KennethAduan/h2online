@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import AvTimerIcon from "@mui/icons-material/AvTimer";
 import { UpdateMaxStocks } from "../../firebase/services/inventoryManager";
 import {
@@ -37,6 +37,7 @@ function ItemCard({
 }: ItemCardProps) {
   const card1Ref: any = useRef(null);
   const card2Ref: any = useRef(null);
+  const [resetFlag, setResetFlag] = useState(false);
 
   useEffect(() => {
     if (card1Ref.current && card2Ref.current) {
@@ -256,6 +257,7 @@ function ItemCard({
               <div className="flex items-center justify-between mt-2">
                 <AvTimerIcon fontSize="large" className="w-full" />
                 <CountdownTimer
+                  resetFlag={resetFlag}
                   monthDuration={
                     itemId === "SedimentFilter123" ||
                     itemId === "FilterSet123" ||
@@ -297,12 +299,18 @@ function ItemCard({
       </div>
 
       <ReStockModal
+        resetFlag={resetFlag}
+        setResetFlag={setResetFlag}
         itemId={itemId}
         stock={stock}
         maxStock={maxStock}
         handleClose={handleClose}
         open={open}
         handleAllBtn={handleAllBtn}
+        isTimer = {itemId === "Membrane123" ||
+        itemId === "SedimentFilter123" ||
+        itemId === "FilterSet123" ||
+        itemId === "SolarSalt123" ? true : false}
       />
     </>
   );
