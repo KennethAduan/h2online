@@ -53,7 +53,9 @@ const CountdownTimer = ({
     const intervalId = setInterval(() => {
       const now = dayjs().tz('Asia/Manila');
       const futureDate = dateTarget;
-  
+      const exactDate = dateTarget.format('YYYY-MM-DD HH:mm:ss');
+      console.log('exactDate', exactDate);
+      
       const diff = futureDate.diff(now);
 
       if (diff <= 0) {
