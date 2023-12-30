@@ -48,12 +48,14 @@ const CountdownTimer = ({
     // } else if (yearDuration) {
     //   dateTarget = dayjs().add(yearCount, "year");
     // }
-    dateTarget = dayjs().add(2, "minute");
+    dateTarget = dayjs().add(1, "month");
     // dateTarget = dayjs("2023-12-29T22:25:59").tz('Asia/Manila');
     const intervalId = setInterval(() => {
       const now = dayjs().tz('Asia/Manila');
       const futureDate = dateTarget;
       const exactDate = dateTarget.format('YYYY-MM-DD HH:mm:ss');
+
+      //Eto na yun Kenneth ipasok mo sa firebase para solid solid kasi ang nangyayari ngayon sa tuwing nagrerender yung inventory umuulit lang yung timer so ang gagawin ilalagay yung exact date nung nag reset then ipapasok dun sa target date yung date 1 month or 2 motnhs from now.
       console.log('exactDate', exactDate);
       
       const diff = futureDate.diff(now);
