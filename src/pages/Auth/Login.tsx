@@ -13,7 +13,7 @@ import { checkUserData } from "@/firebase/services/authManager";
 import { BiSolidUser } from "react-icons/bi";
 import { AiFillLock } from "react-icons/ai";
 import { UserInfoRedux } from "@/utils/redux/slice/userSlice";
-
+import { setCredentialsSnapshot } from "@/utils/redux/slice/credentialSlice";
 type Credentials = {
   userName: string;
   password: string;
@@ -56,7 +56,9 @@ const Login: React.FC = () => {
             userPassword: userData.password,
           })
         );
-        localStorage.setItem("userData", JSON.stringify(checkUserCredentials));
+        // Array of user data
+        dispatch(setCredentialsSnapshot(userData));
+        // localStorage.setItem("userData", JSON.stringify(checkUserCredentials));
         navigate("/pos");
       } else {
         Swal.fire("Oops...", "Invalid username or password", "error");

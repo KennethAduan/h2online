@@ -22,6 +22,8 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 // import { COLORS } from "../../themes";
 import { useNavigate, useLocation } from "react-router-dom";
 import { logoutUserRedux } from "../../utils/redux/slice/userSlice";
+import { setClearCredentials } from "@/utils/redux/slice/credentialSlice";
+import { clearOrder } from "@/utils/redux/slice/orderSlice";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import MonitorIcon from "@mui/icons-material/Monitor";
 const drawerWidth = 250;
@@ -164,6 +166,8 @@ export default function Sidebar() {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(logoutUserRedux());
+                  dispatch(setClearCredentials());
+                  dispatch(clearOrder());
                   localStorage.clear();
                   navigate("/");
                   // Swal.fire({
