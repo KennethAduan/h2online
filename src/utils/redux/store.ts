@@ -30,7 +30,7 @@ const encryptor = encryptTransform({
 
 // Persist configuration with encryption
 const persistConfig: PersistConfig<RootState> = {
-  key: "root",
+  key: "H2_Online",
   version: 1,
   storage,
   transforms: [encryptor],
