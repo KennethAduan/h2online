@@ -176,21 +176,28 @@ function ItemCard({
             </div>
             {stock !== undefined && stock > 0 && (
               <div className="flex justify-between">
-                <Typography
-                  placeholder={undefined}
-                  color="blue-gray"
-                  className="font-medium"
-                  textGradient
-                >
-                  Stock (max. {maxStock} pcs)
-                </Typography>
-                <Typography
-                  placeholder={undefined}
-                  className="font-black text-black"
-                  textGradient
-                >
-                  {stock}
-                </Typography>
+                {itemId === "RoundGallon123" ||
+                itemId === "BigCapSeal123" ||
+                itemId === "SquareGallon123" ||
+                itemId === "350ml123" ? (
+                  <>
+                    <Typography
+                      placeholder={undefined}
+                      color="blue-gray"
+                      className="font-medium"
+                      textGradient
+                    >
+                      Stock (max. {maxStock} pcs)
+                    </Typography>
+                    <Typography
+                      placeholder={undefined}
+                      className="font-black text-black"
+                      textGradient
+                    >
+                      {stock}
+                    </Typography>
+                  </>
+                ) : null}
               </div>
             )}
             <div className="flex justify-between">
