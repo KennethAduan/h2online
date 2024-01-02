@@ -10,6 +10,7 @@ import LoadingScreen from "./Loader/LoadingScreen";
 import ModalComponent from "./Modal/ModalComponent";
 import CountdownTimer from "./Countdown/CountdownTimer";
 import { ReStockModal } from "./Modal/ReStockModal";
+import CountDownTimerV2 from "./Countdown/CountDownTimerV2";
 export {
   Sidebar,
   LoadingScreen,
@@ -23,4 +24,5 @@ export {
   ModalComponent,
   CountdownTimer,
   ReStockModal,
+  CountDownTimerV2,
 };

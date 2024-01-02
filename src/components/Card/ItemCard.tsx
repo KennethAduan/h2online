@@ -8,9 +8,14 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Progress,
 } from "@material-tailwind/react";
 import Swal from "sweetalert2";
+import TimeProgressBar from "../ProgressBar/TimeProgressBar";
+import React from "react";
+import { ReStockModal, CountDownTimerV2 } from "../../components/index";
+import StockProgressBar from "../ProgressBar/StockProgressBar";
+import { calculateValueFromPercentage } from "@/utils/Helpers/ItemCardHelpers";
+import { useAppSelector } from "@/utils/redux/hooks";
 interface ItemCardProps {
   name: string;
   price: number;
@@ -23,8 +28,6 @@ interface ItemCardProps {
   maxStock?: number;
   itemId: string;
 }
-import React from "react";
-import { ReStockModal, CountdownTimer } from "../../components/index";
 
 function ItemCard({
   name = "Demo",
@@ -47,13 +50,24 @@ function ItemCard({
     }
   }, []);
 
-  const calculateValueFromPercentage = (percentage: any, total: any) => {
-    return (percentage / 100) * total;
-  };
-
-  const handleColor = (newStock: any) => {
+  const HandleColor = (newStock: any) => {
     const medStock = calculateValueFromPercentage(50, maxStock) || 0;
     const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
+    const percentage =
+      useAppSelector((state) => state.countdown.timePercentages[itemId]) || 0;
+
+    if (
+      itemId === "Membrane123" ||
+      itemId === "SedimentFilter123" ||
+      itemId === "FilterSet123" ||
+      itemId === "SolarSalt123"
+    ) {
+      if (percentage <= 25) {
+        return "bg-red-500"; // Less than or equal to 25% -> Red
+      } else if (percentage <= 50) {
+        return "bg-yellow-500"; // Less than or equal to 50% -> Yellow
+      }
+    }
 
     let color = "bg-green-500";
 
@@ -101,45 +115,11 @@ function ItemCard({
     }
   };
 
-  const StockProgressBar = ({
-    stock,
-    maxStock,
-  }: {
-    stock: number | undefined;
-    maxStock: number | undefined;
-  }) => {
-    const medStock = calculateValueFromPercentage(50, maxStock) || 0;
-    const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
-    enum colors {
-      GREEN = "green",
-      RED = "red",
-      YELLOW = "yellow",
-    }
-
-    let color = colors.GREEN;
-    if (stock !== undefined && maxStock !== undefined) {
-      if (stock <= lowStock) {
-        // Check for low stock first
-        color = colors.RED;
-      } else if (stock <= medStock) {
-        // Then check for medium stock
-        color = colors.YELLOW;
-      }
-    }
-    return (
-      <Progress
-        color={color}
-        value={stock && maxStock ? (stock / maxStock) * 100 : 0}
-        placeholder={undefined}
-      />
-    );
-  };
-
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   // console.log("itemId", itemId);
-  
+
   return (
     <>
       <div onClick={handleOpen} className="relative mx-12 my-32 h-96 w-96">
@@ -148,7 +128,7 @@ function ItemCard({
           <Card
             ref={card2Ref}
             placeholder={undefined}
-            className={`absolute top-0 w-96 ${handleColor(stock)}`}
+            className={`absolute top-0 w-96 ${HandleColor(stock)}`}
           >
             <CardHeader
               placeholder={undefined}
@@ -254,26 +234,9 @@ function ItemCard({
               itemId === "SedimentFilter123" ||
               itemId === "FilterSet123" ||
               itemId === "SolarSalt123") && (
-              <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center justify-between mx-2 my-2">
                 <AvTimerIcon fontSize="large" className="w-full" />
-                <CountdownTimer
-                  resetFlag={resetFlag}
-                  monthDuration={
-                    itemId === "SedimentFilter123" ||
-                    itemId === "FilterSet123" ||
-                    itemId === "SolarSalt123"
-                      ? true
-                      : false
-                  }
-                  yearDuration={true}
-                  monthCount={
-                    itemId === "SedimentFilter123" || itemId === "FilterSet123"
-                      ? 1
-                      : 2
-                  }
-                  yearCount={1}
-                  itemCode={itemId}
-                />
+                <CountDownTimerV2 itemId={itemId} resetFlag={resetFlag} />
               </div>
             )}
           </CardBody>
@@ -289,11 +252,19 @@ function ItemCard({
             >
               Status:
             </Typography>
-            {stock !== undefined && stock > 0 ? (
-              <StockProgressBar stock={stock} maxStock={maxStock} />
-            ) : (
-              <StockProgressBar stock={stock} maxStock={maxStock} />
-            )}
+            {(itemId === "350ml123" ||
+              itemId === "RoundGallon123" ||
+              itemId === "BigCapSeal123" ||
+              itemId === "SquareGallon123") &&
+              stock !== undefined &&
+              stock > 0 && (
+                <StockProgressBar stock={stock} maxStock={maxStock} />
+              )}
+
+            {(itemId === "Membrane123" ||
+              itemId === "SedimentFilter123" ||
+              itemId === "FilterSet123" ||
+              itemId === "SolarSalt123") && <TimeProgressBar itemId={itemId} />}
           </CardFooter>
         </Card>
       </div>
@@ -307,10 +278,14 @@ function ItemCard({
         handleClose={handleClose}
         open={open}
         handleAllBtn={handleAllBtn}
-        isTimer = {itemId === "Membrane123" ||
-        itemId === "SedimentFilter123" ||
-        itemId === "FilterSet123" ||
-        itemId === "SolarSalt123" ? true : false}
+        isTimer={
+          itemId === "Membrane123" ||
+          itemId === "SedimentFilter123" ||
+          itemId === "FilterSet123" ||
+          itemId === "SolarSalt123"
+            ? true
+            : false
+        }
       />
     </>
   );

@@ -19,6 +19,7 @@ import { encryptTransform } from "redux-persist-transform-encrypt";
 import userSlice from "./slice/userSlice";
 import orderSlice from "./slice/orderSlice";
 import credentialSlice from "./slice/credentialSlice";
+import countdownSlice from "./slice/countdownSlice";
 // Encrypt transform configuration
 const encryptor = encryptTransform({
   secretKey: "my-super-secret-key", // Use a secure key
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   user: userSlice,
   order: orderSlice,
   credential: credentialSlice,
+  countdown: countdownSlice,
 });
 
 // Redux state interface
@@ -48,6 +50,7 @@ export interface RootState {
   user: ReturnType<typeof userSlice>;
   order: ReturnType<typeof orderSlice>;
   credential: ReturnType<typeof credentialSlice>;
+  countdown: ReturnType<typeof countdownSlice>;
 }
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer);
