@@ -55,7 +55,7 @@ function ItemCard({
     const lowStock = calculateValueFromPercentage(10, maxStock) || 0;
     const percentage =
       useAppSelector((state) => state.countdown.timePercentages[itemId]) || 0;
-
+    let color = "bg-green-500";
     if (
       itemId === "Membrane123" ||
       itemId === "SedimentFilter123" ||
@@ -63,20 +63,25 @@ function ItemCard({
       itemId === "SolarSalt123"
     ) {
       if (percentage <= 25) {
-        return "bg-red-500"; // Less than or equal to 25% -> Red
+        color = "bg-red-500";
       } else if (percentage <= 50) {
-        return "bg-yellow-500"; // Less than or equal to 50% -> Yellow
+        color = "bg-yellow-500";
       }
     }
 
-    let color = "bg-green-500";
-
-    if (newStock <= lowStock) {
-      // Check for low stock first
-      color = "bg-red-500";
-    } else if (newStock <= medStock) {
-      // Then check for medium stock
-      color = "bg-yellow-500";
+    if (
+      itemId === "RoundGallon123" ||
+      itemId === "BigCapSeal123" ||
+      itemId === "SquareGallon123" ||
+      itemId === "350ml123"
+    ) {
+      if (newStock <= lowStock) {
+        // Check for low stock first
+        color = "bg-red-500";
+      } else if (newStock <= medStock) {
+        // Then check for medium stock
+        color = "bg-yellow-500";
+      }
     }
     return color;
   };

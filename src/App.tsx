@@ -20,7 +20,11 @@ const App = () => {
 
   useEffect(() => {
     // Perform actions when the App component mounts
-    CheckItemStocksFirebase(); // Now this only triggers once when the App component mounts
+    const fetchData = async () => {
+      await CheckItemStocksFirebase();
+    };
+
+    fetchData();
 
     const handleResize = () => {
       const width = window.innerWidth;

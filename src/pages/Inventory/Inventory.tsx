@@ -4,7 +4,7 @@ import { DrawerAndNavLayout } from "@/layout";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { useState } from "react";
 import { StockStatusButtons, ItemCard } from "@/components";
-
+import Button from "@mui/material/Button";
 import GetInventoryData from "@/firebase/hooks/GetItemStocks";
 const Inventory = () => {
   const [selectedStockStatus, setSelectedStockStatus] = useState<string>("All"); // Default to "All" StockStatus
@@ -12,14 +12,25 @@ const Inventory = () => {
     setSelectedStockStatus(StockStatus);
   };
   const IventoryData = GetInventoryData(selectedStockStatus);
+
+  const navigatePurchaseOrder = () => {
+    window.open("/purchase-order", "_blank");
+  };
   return (
     <DrawerAndNavLayout>
       <div>
-        <Breadcrumbs className="mb-4 bg-black " placeholder={undefined}>
-          <p className="font-bold text-white md:text-xl sm:text-lg lg:text-lg">
-            INVENTORY
-          </p>
-        </Breadcrumbs>
+        <div className="flex justify-between">
+          <Breadcrumbs className="mb-4 bg-black " placeholder={undefined}>
+            <p className="font-bold text-white md:text-xl sm:text-lg lg:text-lg">
+              INVENTORY
+            </p>
+          </Breadcrumbs>
+          <div>
+            <Button onClick={navigatePurchaseOrder} variant="contained">
+              Purchase order
+            </Button>
+          </div>
+        </div>
         <StockStatusButtons
           onStockStatusSelect={handleSelectedStockStatus}
           selectedStockStatus={selectedStockStatus}

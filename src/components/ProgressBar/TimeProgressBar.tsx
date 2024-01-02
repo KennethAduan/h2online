@@ -32,9 +32,10 @@ async function updateInventoryStatusByItemCode(
 
       if (percentage <= 25) {
         newStatus = "Low Stock";
-        newStocks = 0; // Set stocks to 0
       } else if (percentage <= 50) {
         newStatus = "Moderate Stock";
+      } else if (percentage == 0) {
+        newStocks = 0; // Set stocks to 0
       }
 
       // Update the status in the document

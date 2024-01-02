@@ -52,13 +52,26 @@ export const CheckItemStocksFirebase = () => {
 
         // Check if the stock is 0 and hasn't been notified yet
         if (stocks === 0 && !notifiedItems.has(itemName)) {
-          AddNotificationsToFirebase(
-            `Item ${itemName} is out of stock!`,
-            "Stocks Report",
-            "inventory"
-          );
-          notifiedItems.add(itemName); // Prevent further notifications for the same item
+          if (
+            itemName === "Membrane" ||
+            itemName == "Filter Set" ||
+            itemName === "Sediment Filter" ||
+            itemName === "Solar Salt"
+          ) {
+            AddNotificationsToFirebase(
+              `Item ${itemName} is out of stock!`,
+              "Stocks Report",
+              "purchase-order"
+            );
+          } else {
+            AddNotificationsToFirebase(
+              `Item ${itemName} is out of stock!`,
+              "Stocks Report",
+              "inventory"
+            );
+          }
         }
+        notifiedItems.add(itemName); // Prevent further notifications for the same item
         // If the stock is replenished, remove from notified items
         if (stocks > 0 && notifiedItems.has(itemName)) {
           notifiedItems.delete(itemName);

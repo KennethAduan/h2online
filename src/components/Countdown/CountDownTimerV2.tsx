@@ -9,7 +9,7 @@ import {
 import { useAppSelector, useAppDispatch } from "@/utils/redux/hooks";
 import { calculateTargetDate } from "../../utils/Helpers/calculateTargetDate";
 import { toast } from "react-toastify";
-
+import { UpdateMaxStocks } from "@/firebase/services/inventoryManager";
 interface CountdownTimerProps {
   itemId: string;
   resetFlag: boolean;
@@ -60,6 +60,7 @@ const CountDownTimerV2: React.FC<CountdownTimerProps> = ({
       const newTargetDate = calculateTargetDate(itemId).toISOString();
       dispatch(setTargetDate({ itemId, targetDate: newTargetDate }));
       dispatch(resetTargetDate({ itemId, resetFlag }));
+      UpdateMaxStocks(itemId, 500);
       toast.success("Time updated successfully");
     }
   }, [itemId, resetFlag, targetDates, resetFlags, dispatch]);
