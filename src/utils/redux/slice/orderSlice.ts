@@ -14,11 +14,13 @@ interface Item {
 interface OrderSummaryState {
   items: Item[];
   totalAmount: number;
+  paymentType: string;
 }
 
 const initialState: OrderSummaryState = {
   items: [],
   totalAmount: 0,
+  paymentType: "Cash",
 };
 
 const orderSlice = createSlice({
@@ -54,6 +56,9 @@ const orderSlice = createSlice({
         state.totalAmount -= item.unitPrice;
       }
     },
+    setPaymentType: (state, action: PayloadAction<string>) => {
+      state.paymentType = action.payload;
+    },
     clearOrder: (state) => {
       state.items = [];
       state.totalAmount = 0;
@@ -67,6 +72,7 @@ export const {
   clearOrder,
   increaseQuantity,
   decreaseQuantity,
+  setPaymentType,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

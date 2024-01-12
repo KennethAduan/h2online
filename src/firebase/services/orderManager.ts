@@ -17,7 +17,8 @@ import Swal from "sweetalert2";
 export const AddPurchaseOrderFirebase = async (
   items: any[],
   totalAmount: number,
-  itemsNumber: number
+  itemsNumber: number,
+  paymentType: string
 ) => {
   const purchaseOrderRef = collection(db, "purchaseOrders");
   const id = generateRandomId();
@@ -28,6 +29,7 @@ export const AddPurchaseOrderFirebase = async (
     date: Timestamp.now(),
     itemsNumber: itemsNumber,
     totalAmount: totalAmount,
+    paymentType: paymentType,
   });
   // Use the reference from the newly created purchase order to add items to its subcollection
   const invoiceRef = collection(orderDocRef, "purchaseItems");

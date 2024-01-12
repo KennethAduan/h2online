@@ -31,12 +31,14 @@ const Sales = () => {
         return <p>{date ? moment(date).format("MMM D, YYYY") : ""}</p>;
       },
     },
-    { field: "itemsNumber", headerName: "items", width: 250 },
+    { field: "itemsNumber", headerName: "Items", width: 120 },
+    { field: "paymentType", headerName: "Payment", width: 100 },
+
     {
       field: "totalAmount",
       headerName: "Total",
       type: "number",
-      width: 250,
+      width: 180,
       renderCell: (params) => {
         return <p>{formatPeso(params.value as number)}</p>;
       },

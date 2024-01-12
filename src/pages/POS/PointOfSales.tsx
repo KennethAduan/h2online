@@ -15,7 +15,7 @@ import PayButtonOrder from "./PayButton/PayButtonOrder";
 import ClearOrders from "./ClearOrder/ClearOrders";
 import RefundButton from "./RefundButton/RefundButton";
 import { formatPeso } from "@/utils/Helpers";
-
+import SelectPayment from "./SelectPayment/SelectPayment";
 const PointOfSales = () => {
   const RefillProducts = FetchRefillProduct();
   const PurchaseProducts = FetchPurchaseProduct();
@@ -34,8 +34,8 @@ const PointOfSales = () => {
         serviceType: "Refill",
         name: product.item,
         itemCode: product.itemCode,
-        priceTaxPurchase: 0,
-        unitPricePurchase: product.refillPrice,
+        priceTaxPurchase: product.unitPriceTax,
+        unitPricePurchase: product.unitPriceRefill,
         quantity: 1,
         unitPrice: product.refillPrice,
         subPrice: product.refillPrice,
@@ -116,7 +116,14 @@ const PointOfSales = () => {
         <div>
           <LayoutCard title="Order Summary">
             <OrderTable />
-            <div className="flex justify-between mt-32 text-2xl font-bold text-AccentFontColor">
+            <div className="mt-12">
+              <h1 className="text-2xl font-bold text-AccentFontColor">
+                Select Payment
+              </h1>
+              <SelectPayment />
+            </div>
+
+            <div className="flex justify-between mt-12 text-2xl font-bold text-AccentFontColor">
               <ClearOrders />
               Total: {formatPeso(totalAmount)}
             </div>

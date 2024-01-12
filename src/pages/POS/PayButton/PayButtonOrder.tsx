@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const PayButtonOrder = () => {
   const items = useAppSelector((state) => state.order.items);
-  const { totalAmount } = useAppSelector((state) => state.order);
+  const { totalAmount, paymentType } = useAppSelector((state) => state.order);
   const [loading, setLoading] = useState<boolean>(false);
   const itemNumber = items.length;
   const dispatch = useAppDispatch();
@@ -18,7 +18,8 @@ const PayButtonOrder = () => {
     const result = await AddPurchaseOrderFirebase(
       items,
       totalAmount,
-      itemNumber
+      itemNumber,
+      paymentType
     );
     return result;
   };
